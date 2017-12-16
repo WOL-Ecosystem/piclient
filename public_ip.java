@@ -8,10 +8,10 @@ public class public_ip {
             BufferedReader in = new BufferedReader(new InputStreamReader(ipAdress.openStream()));
             String ip = in.readLine();
             System.out.println("Public IP: " + ip);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (MalformedURLException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 }
