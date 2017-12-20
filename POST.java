@@ -17,9 +17,11 @@ public class POST {
 			connection.setRequestMethod("POST");
 
             String urlParameters = ("user=" + user_data.get("user") +
-			"&pass=" + user_data.get("password") +
-			"&mac=" + user_data.get("mac") + "&status=" +
-			user_data.get("status"));
+			"&pass=" + user_data.get("pass") +
+			"&uuid=" + user_data.get("uuid") +
+			"&token=" + user_data.get("token") +
+			"&mac=" + user_data.get("mac") +
+			"&status=" + user_data.get("status"));
 
 			// Send post request
 			connection.setDoOutput(true);

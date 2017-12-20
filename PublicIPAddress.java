@@ -10,9 +10,11 @@ public class PublicIPAddress {
             URL IPFromInternet = new URL("https://ip.sht.gr/ip");// The only way of getting the public ip via Java
             BufferedReader in = new BufferedReader(new InputStreamReader(IPFromInternet.openStream()));
             this.publicIP = in.readLine();
-        } catch (MalformedURLException ex) {
+        }
+        catch (MalformedURLException ex) {
             ex.printStackTrace();
-        } catch (IOException ex) {
+        }
+        catch (IOException ex) {
             ex.printStackTrace();
         }
     }
