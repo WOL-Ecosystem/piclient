@@ -13,10 +13,9 @@ The service can be used from anyone and of course **is free**. An option to host
 
 ### Prerequisites
 
-```
-A raspberry Pi.
-Java SE 7 and up. Although I recommend that you download the lattest release.
-```
+- One Raspberry Pi (if you intent to run the service there).
+- Java SE 7 and up although I recommend that you download the lattest release.
+
 
 ### Installing
 
