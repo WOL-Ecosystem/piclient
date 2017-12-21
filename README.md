@@ -72,12 +72,16 @@ After that, you will be prompted to input your username and password.
 
  After you have successfully build your server, follow the above mentioned instructions.
 
+## Example Use
+
+TODO
+
 ## Contributing
 
-If you want to contribute to the project, you are more than welcome. Simply, fork the repository, commit your code and create a pull request. Dont forget to add your name to the [contributors](https://github.com/geocfu/WOL/contributors) list.
+If you want to contribute to the project, you are more than welcome. Simply, fork the repository, commit your code and create a pull request.
 
 ## Versions
-  - version 0.0.1 - initial version  
+  - version 0.1.0 - initial version  
 
 ## Authors
 
