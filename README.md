@@ -85,7 +85,7 @@ If you want to contribute to the project, you are more than welcome. Simply, for
 
 ## Authors
 
-* **George Mantellos** - *Client* - [geocfu](https://github.com/geocfu)
+* **George Mantellos** - *Main Author* - [geocfu](https://github.com/geocfu)
 
 See also the list of [contributors](https://github.com/geocfu/WOL/contributors) who participated in this project.
 
