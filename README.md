@@ -26,7 +26,7 @@ So after clearing that out lets procceed.
  You need to register an account at https://wol.sht.gr/register.  
 Then, create a local folder anywhere on your raspberry called, WOL.
 ```
-$ mkdir <WOL>
+$ mkdir WOL
 ```
 Go to that folder by typping,
 ```
