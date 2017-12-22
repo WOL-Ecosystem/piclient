@@ -20,7 +20,8 @@ The service can be used from anyone and of course **is free**. An option to host
 ### Installing
 
 - #### Using the server backend we provide
-##### Security over all! The only user-sensitive data we store is username, email and the MAC address/es. Passwords are irreversibly hashed and then stored.
+ **Security over all! The only user-sensitive data we store is username, email and the MAC address/es. Passwords are irreversibly hashed and then stored.**  
+
 So after clearing that out lets procceed.  
 
  You need to register an account at https://wol.sht.gr/register.  
