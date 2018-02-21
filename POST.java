@@ -7,21 +7,21 @@ public class POST {
 	private int responseCode;
 	private StringBuffer response;
 
-	public POST (Map<String, String> user_data) {
+	public POST (Map<String, String> credentials) {
 		try {
-			String url = user_data.get("address");
+			String url = credentials.get("address");
 			URL obj = new URL(url);
 			HttpsURLConnection connection =
 									(HttpsURLConnection)obj.openConnection();
 			//add request header
 			connection.setRequestMethod("POST");
 
-            String urlParameters = ("user=" + user_data.get("user") +
-			"&pass=" + user_data.get("pass") +
-			"&uuid=" + user_data.get("uuid") +
-			"&token=" + user_data.get("token") +
-			"&mac=" + user_data.get("mac") +
-			"&status=" + user_data.get("status"));
+            String urlParameters = ("username=" + credentials.get("username") +
+			"&password=" + credentials.get("password") +
+			"&uuid=" + credentials.get("uuid") +
+			"&token=" + credentials.get("token") +
+			"&mac=" + credentials.get("mac") +
+			"&status=" + credentials.get("status"));
 
 			// Send post request
 			connection.setDoOutput(true);
@@ -51,7 +51,7 @@ public class POST {
             ex.printStackTrace();
         }
 	}
-
+	// ex 200,301,404 etc.
 	public int getResponseCode() {
 		return this.responseCode;
 	}
