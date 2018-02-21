@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class PropertiesWriter {
-    public PropertiesWriter(Map<String, String> credentials) {
+    public PropertiesWriter (Map<String, String> credentials) {
         Properties config = new Properties();
         OutputStream output = null;
         try {
