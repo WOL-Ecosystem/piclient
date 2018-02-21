@@ -76,10 +76,9 @@ public class Handshake {
         StringBuffer stringBufferResponse = handshake.getResponse();
         String stringResponse = stringBufferResponse.toString();
         String[] response = stringResponse.split("\\,");
-        System.out.println(stringResponse); // testing
         credentials.put("uuid", response[1]);
         credentials.put("token", response[2]);
         PropertiesWriter configuration = new PropertiesWriter(credentials);
-        //System.out.println(handshake.toString()); // testing
+        System.out.println(response[0]); // testing
     }
 }
