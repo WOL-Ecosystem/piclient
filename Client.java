@@ -8,28 +8,13 @@ public class Client {
     public static void main (String[] args) {
         //read .properties
         PropertiesReader configuration = new PropertiesReader();
+        credentials.put("address", "https://wol.sht.gr/backend/ping");
+        credentials.put("uuid", configuration.getUuid());
+        credentials.put("mac", configuration.getMac());
+        credentials.put("username", configuration.getUsername());
+        credentials.put("token", configuration.getToken());
         //sent POST with the .properties credenntials
-        POST POST = new POST(configuration.getProperties());
+        POST POST = new POST(credentials);
         System.out.println(POST.toString()); // testing
-
-
-
-
-
-
-
-        // 0 do nothing
-        // 1 boot target computer
-        // 2 shutdown target computer
-        if (Integer.parseInt(POST.getResponse().toString()) == 1) {
-            // wake the pc
-            // default local ip; all pcs listen
-            //MagicPacket wakeonlan = new MagicPacket(user_data, "255.255.255.255");
-        }
-        else if (Integer.parseInt(POST.getResponse().toString()) == 2) {
-            //pc is on
-            // send shutdown signal to target computer
-            System.out.println("Server responed with 2, shuting down target pc");// testing
-        }
     }
 }
