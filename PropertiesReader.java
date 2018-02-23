@@ -3,7 +3,7 @@ import java.util.*;
 
 public class PropertiesReader {
 
-    private String uuid, mac, username, token = "";
+    private String uuid, mac, username, token, handshakeAddress, pingAddress, postMethod, controllerName;
 
     public PropertiesReader() {
 
@@ -16,11 +16,14 @@ public class PropertiesReader {
     		// load a properties file
     		prop.load(input);
     		// get the property value
-            this.uuid = prop.getProperty("uuid");
-            this.mac = prop.getProperty("mac");
+            this.handshakeAddress = prop.getProperty("handshakeAddress");
+            this.controllerName = prop.getProperty("controllerName");
+            this.pingAddress = prop.getProperty("pingAddress");
+            this.postMethod = prop.getProperty("postMethod");//might need deletetion
             this.username = prop.getProperty("username");
             this.token = prop.getProperty("token");
-
+            this.uuid = prop.getProperty("uuid");
+            this.mac = prop.getProperty("mac");
 
     	} catch (IOException ex) {
     		ex.printStackTrace();
@@ -36,12 +39,21 @@ public class PropertiesReader {
     	}
     }
 
-    public String getUuid() {
-        return this.uuid;
+    public String getHandshakeAddress() {
+        return this.handshakeAddress;
     }
 
-    public String getMac() {
-        return this.mac;
+    public String getControllerName() {
+        return this.controllerName;
+    }
+
+    public String getPingAddress() {
+        return this.pingAddress;
+    }
+
+
+    public String getPostMethod() {
+        return this.postMethod;
     }
 
     public String getUsername() {
@@ -50,5 +62,13 @@ public class PropertiesReader {
 
     public String getToken() {
         return this.token;
+    }
+
+    public String getUuid() {
+        return this.uuid;
+    }
+
+    public String getMac() {
+        return this.mac;
     }
 }
