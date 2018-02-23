@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.*;
 import java.net.*;
 import java.util.regex.*;
@@ -7,7 +8,7 @@ public class Handshake {
     private static Map<String, String> credentials = new HashMap<String, String>();
 
     public static void main(String[] args) {
-        //Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);//must close it TODO
         System.out.println("WOL (aka. Wake On Lan) handshake!");
         System.out.println("If you do not already have an account," +
         " please register one at https://wol.sht.gr/register");
@@ -39,7 +40,7 @@ public class Handshake {
         boolean passwordFlag = true;
         do {
             //String password = sc.nextLine();
-            String password = "Yi$66666";
+            String password = "";//to be filled
             Matcher testInput = passwordPattern.matcher(password);
             if (testInput.matches() == true) {
                 credentials.put("password", password);
@@ -52,6 +53,24 @@ public class Handshake {
                 System.out.print("Password: ");
             }
         } while (passwordFlag);
+
+        System.out.println("Controller device name: ");// delete ln after final
+        // checking if the controllerName complies to legal characters
+        String controllerNameRegex = "^((?=.*[a-z])|(?=.*[A-Z]))[a-zA-Z0-9 ]{6,32}$";
+        Pattern controllerNamePattern = Pattern.compile(controllerNameRegex);
+        boolean controllerNameFlag = true;
+        do {
+            //String controllerName = sc.nextLine();
+            String controllerName = "icarus";
+            Matcher input = controllerNamePattern.matcher(controllerName);
+            if (input.matches() == true) {
+                credentials.put("controllerName", controllerName);
+                controllerNameFlag = false;
+            }
+            else {
+                System.out.println("Please input a valid name");
+            }
+        } while (controllerNameFlag);
 
         try {
             InetAddress address = InetAddress.getLocalHost();
@@ -68,7 +87,11 @@ public class Handshake {
         catch (Exception ex) {
             ex.printStackTrace();
         }
-        credentials.put("address", "https://wol.sht.gr/backend/handshake.php");
+        PropertiesReader handshakeConfiguration = new PropertiesReader();
+        credentials.put("handshakeAddress", handshakeConfiguration.getHandshakeAddress().replace("\\", ""));
+        credentials.put("pingAddress", handshakeConfiguration.getPingAddress().replace("\\", ""));
+        credentials.put("postMethod", "handshake");
+
         // write config reader
         //send credentials used only one time for handshake
         POST handshake = new POST(credentials);
@@ -76,9 +99,10 @@ public class Handshake {
         StringBuffer stringBufferResponse = handshake.getResponse();
         String stringResponse = stringBufferResponse.toString();
         String[] response = stringResponse.split("\\,");
+        System.out.println(stringResponse);//testing
         credentials.put("uuid", response[1]);
         credentials.put("token", response[2]);
-        PropertiesWriter configuration = new PropertiesWriter(credentials);
+        new PropertiesWriter(credentials);
         System.out.println(response[0]); // testing
     }
 }
