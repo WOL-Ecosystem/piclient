@@ -6,28 +6,36 @@ import javax.net.ssl.*;
 public class POST {
 	private int responseCode;
 	private StringBuffer response;
+	private String url, urlParameters;
 
 	public POST (Map<String, String> credentials) {
 		try {
-			String url = credentials.get("address");
-			URL obj = new URL(url);
+			if (credentials.get("postMethod") == "handshake"){
+				this.url = credentials.get("handshakeAddress");
+				this.urlParameters = ("username=" + credentials.get("username") +
+				"&password=" + credentials.get("password") +
+				"&mac=" + credentials.get("mac") +
+				"&name=" + credentials.get("controllerName"));
+			}
+			else {//MUST ADD AFTER TASOS CREATES PINGING
+				this.url = credentials.get("pingAddress");
+				this.urlParameters = ("username=" + credentials.get("username") +
+				"&password=" + credentials.get("password") +
+				"&uuid=" + credentials.get("uuid") +
+				"&token=" + credentials.get("token") +
+				"&mac=" + credentials.get("mac") +
+				"&status=" + credentials.get("status"));
+			}
+			URL obj = new URL(this.url);
 			HttpsURLConnection connection =
 									(HttpsURLConnection)obj.openConnection();
 			//add request header
 			connection.setRequestMethod("POST");
-
-            String urlParameters = ("username=" + credentials.get("username") +
-			"&password=" + credentials.get("password") +
-			"&uuid=" + credentials.get("uuid") +
-			"&token=" + credentials.get("token") +
-			"&mac=" + credentials.get("mac") +
-			"&status=" + credentials.get("status"));
-
 			// Send post request
 			connection.setDoOutput(true);
 			DataOutputStream wr =
 							new DataOutputStream(connection.getOutputStream());
-			wr.writeBytes(urlParameters);
+			wr.writeBytes(this.urlParameters);
 			wr.flush();
 			wr.close();
 
