@@ -5,46 +5,52 @@ import java.util.regex.*;
 
 public class Handshake {
 
-    private static Map<String, String> credentials = new HashMap<String, String>();
+    private String usernameRegex, username, passwordRegex, password, controllerNameRegex, controllerName, macAddress;
+    private Pattern usernamePattern, passwordPattern, controllerNamePattern;
+    private Matcher testInput;
+    private boolean usernameFlag, passwordFlag, controllerNameFlag;
+    private Scanner sc;
+    private InetAddress address;
+    private NetworkInterface networkInterface;
+    private byte[] mac;
+    private StringBuilder stringBuilder;
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);//must close it TODO
+    public Handshake() {
+        this.sc = new Scanner(System.in);
         System.out.println("WOL (aka. Wake On Lan) handshake!");
         System.out.println("If you do not already have an account," +
         " please register one at https://wol.sht.gr/register");
 
         System.out.println("Username: ");
         // checking if the username complies to legal characters
-        String usernameRegex = "^((?=.*[a-z])|(?=.*[A-Z]))[a-zA-Z0-9]{5,16}$";
-        Pattern usernamePattern = Pattern.compile(usernameRegex);
-        boolean usernameFlag = true;
+        this.usernameRegex = "^((?=.*[a-z])|(?=.*[A-Z]))[a-zA-Z0-9]{5,16}$";
+        this.usernamePattern = Pattern.compile(this.usernameRegex);
+        this.usernameFlag = true;
         do {
             //String username = sc.nextLine();
-            String username = "geocfu"; // testing
-            Matcher testInput = usernamePattern.matcher(username);
+            this.username = "geocfu"; // testing
+            this.testInput = usernamePattern.matcher(this.username);
             if (testInput.matches() == true) {
-                credentials.put("username", username);
-                usernameFlag = false;
+                this.usernameFlag = false;
             }
             else {
                 System.out.println("Username must be 5 to 16 characters long," +
                 " and must not contain any special characters, ex.flaminglemin .");
                 System.out.print("Username: ");
             }
-        } while (usernameFlag);
+        } while (this.usernameFlag);
 
         System.out.println("Password: ");
         // checking if the password complies to legal characters
-        String passwordRegex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\\w\\s]).{8,32}$";
-        Pattern passwordPattern = Pattern.compile(passwordRegex);
-        boolean passwordFlag = true;
+        this.passwordRegex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\\w\\s]).{8,32}$";
+        this.passwordPattern = Pattern.compile(this.passwordRegex);
+        this.passwordFlag = true;
         do {
             //String password = sc.nextLine();
-            String password = "";//to be filled
-            Matcher testInput = passwordPattern.matcher(password);
+            this.password = "maEonh5qS@";//to be filled
+            this.testInput = passwordPattern.matcher(this.password);
             if (testInput.matches() == true) {
-                credentials.put("password", password);
-                passwordFlag = false;
+                this.passwordFlag = false;
             }
             else {
                 System.out.println("Password must be 8 to 32 characters long," +
@@ -52,57 +58,55 @@ public class Handshake {
                 " one number and one special character, ex. Password123@ .");
                 System.out.print("Password: ");
             }
-        } while (passwordFlag);
+        } while (this.passwordFlag);
 
         System.out.println("Controller device name: ");// delete ln after final
         // checking if the controllerName complies to legal characters
-        String controllerNameRegex = "^((?=.*[a-z])|(?=.*[A-Z]))[a-zA-Z0-9 ]{6,32}$";
-        Pattern controllerNamePattern = Pattern.compile(controllerNameRegex);
-        boolean controllerNameFlag = true;
+        this.controllerNameRegex = "^((?=.*[a-z])|(?=.*[A-Z]))[a-zA-Z0-9 ]{6,32}$";
+        this.controllerNamePattern = Pattern.compile(this.controllerNameRegex);
+        this.controllerNameFlag = true;
         do {
             //String controllerName = sc.nextLine();
-            String controllerName = "icarus";
-            Matcher input = controllerNamePattern.matcher(controllerName);
-            if (input.matches() == true) {
-                credentials.put("controllerName", controllerName);
-                controllerNameFlag = false;
+            this.controllerName = "icarus";
+            this.testInput = controllerNamePattern.matcher(this.controllerName);
+            if (testInput.matches() == true) {
+                this.controllerNameFlag = false;
             }
             else {
                 System.out.println("Please input a valid name");
             }
-        } while (controllerNameFlag);
+        } while (this.controllerNameFlag);
 
         try {
-            InetAddress address = InetAddress.getLocalHost();
-            NetworkInterface ni = NetworkInterface.getByInetAddress(address);
-            byte[] mac = ni.getHardwareAddress();
+            this.address = InetAddress.getLocalHost();
+            this.networkInterface = NetworkInterface.getByInetAddress(this.address);
+            this.mac = networkInterface.getHardwareAddress();
 
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < mac.length; i++) {
-                sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "":""));
+            this.stringBuilder = new StringBuilder();
+            for (int i = 0; i < this.mac.length; i++) {
+                stringBuilder.append(String.format("%02X%s", this.mac[i], (i < this.mac.length - 1) ? "":""));
             }
-            credentials.put("mac", sb.toString());
-            //credentials.put("mac", "2C4D54036333");
+            this.macAddress = stringBuilder.toString();
         }
         catch (Exception ex) {
             ex.printStackTrace();
         }
-        PropertiesReader handshakeConfiguration = new PropertiesReader();
-        credentials.put("handshakeAddress", handshakeConfiguration.getHandshakeAddress().replace("\\", ""));
-        credentials.put("pingAddress", handshakeConfiguration.getPingAddress().replace("\\", ""));
-        credentials.put("postMethod", "handshake");
 
-        // write config reader
-        //send credentials used only one time for handshake
-        POST handshake = new POST(credentials);
-        //save all the required credentials for .properties creation
-        StringBuffer stringBufferResponse = handshake.getResponse();
-        String stringResponse = stringBufferResponse.toString();
-        String[] response = stringResponse.split("\\,");
-        System.out.println(stringResponse);//testing
-        credentials.put("uuid", response[1]);
-        credentials.put("token", response[2]);
-        new PropertiesWriter(credentials);
-        System.out.println(response[0]); // testing
+    }
+
+    public String getUsername() {
+        return this.username;
+    }
+
+    public String getControllerName() {
+        return this.controllerName;
+    }
+
+    public String getMacAddress() {
+        return this.macAddress;
+    }
+
+    public String getPassword() {
+        return this.password;
     }
 }
