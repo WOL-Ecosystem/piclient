@@ -19,7 +19,7 @@ public class Handshake {
         this.sc = new Scanner(System.in);
         System.out.println("WOL (aka. Wake On Lan) handshake!");
         System.out.println("If you do not already have an account," +
-        " please register one at https://wol.sht.gr/register");
+        " please register at https://wol.sht.gr/backend/register");
 
         System.out.println("Username: ");
         // checking if the username complies to legal characters
@@ -28,7 +28,7 @@ public class Handshake {
         this.usernameFlag = true;
         do {
             //String username = sc.nextLine();
-            this.username = "geocfu"; // testing
+            this.username = "geocfu11"; // testing
             this.testInput = usernamePattern.matcher(this.username);
             if (testInput.matches() == true) {
                 this.usernameFlag = false;
