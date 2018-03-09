@@ -11,6 +11,7 @@ public class Client {
 
     private static String postResponse, answer = null;
     private static String[] postResponseParts;
+    private static boolean exceptionFlag;
 
     private static String errorChecking(String response) {
         try {
@@ -55,6 +56,7 @@ public class Client {
                 }
             }
             catch (responseException rex) {
+                exceptionFlag = true;
                 answer = rex.getMessage();
                 System.out.println(rex.getMessage());
             }
@@ -111,8 +113,8 @@ public class Client {
 
             POSTConfiguration = new POST(credentials);
 
-            postResponse = POSTConfiguration.getResponse().toString();
             if (applicationProperties.getProperty("postMethod") == "handshake") {
+                postResponse = POSTConfiguration.getResponse().toString();
                 if (errorChecking(postResponse) == null) {//todo only respond to know errors and messages
                     postResponseParts = postResponse.split("\\,", 3);
                     applicationProperties.setProperty("uuid", postResponseParts[1]);
@@ -122,12 +124,16 @@ public class Client {
                     System.out.println("\nconfiguration creation was not succesfull.");
                 }
             }
-            else {
-
+            else if (applicationProperties.getProperty("postMethod") == "ping") {
+                //magic goes here
             }
-            FileOutputStream out = new FileOutputStream("configuration");
-            applicationProperties.store(out, "DO-NOT-MAKE-ANY-CHANGES");
-            out.close();
+
+            if (!exceptionFlag) {
+                FileOutputStream out = new FileOutputStream("configuration");
+                applicationProperties.store(out, "DO-NOT-MAKE-ANY-CHANGES");
+                out.close();
+            }
+
         }
         catch (FileNotFoundException fnfex) {
             fnfex.printStackTrace();
