@@ -28,7 +28,7 @@ public class Handshake {
         this.usernameFlag = true;
         do {
             //String username = sc.nextLine();
-            this.username = "geocfu11"; // testing
+            this.username = "geocfu"; // testing
             this.testInput = usernamePattern.matcher(this.username);
             if (testInput.matches() == true) {
                 this.usernameFlag = false;

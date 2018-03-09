@@ -112,18 +112,22 @@ public class Client {
             POSTConfiguration = new POST(credentials);
 
             postResponse = POSTConfiguration.getResponse().toString();
-            if (errorChecking(postResponse) == null) {//todo only respond to know errors and messages
-                postResponseParts = postResponse.split("\\,", 3);
-                applicationProperties.setProperty("uuid", postResponseParts[1]);
-                applicationProperties.setProperty("token", postResponseParts[2]);
-
-                FileOutputStream out = new FileOutputStream("configuration");
-                applicationProperties.store(out, "DO-NOT-MAKE-ANY-CHANGES");
-                out.close();
+            if (applicationProperties.getProperty("postMethod") == "handshake") {
+                if (errorChecking(postResponse) == null) {//todo only respond to know errors and messages
+                    postResponseParts = postResponse.split("\\,", 3);
+                    applicationProperties.setProperty("uuid", postResponseParts[1]);
+                    applicationProperties.setProperty("token", postResponseParts[2]);
+                }
+                else {
+                    System.out.println("\nconfiguration creation was not succesfull.");
+                }
             }
             else {
-                System.out.println("\nconfiguration creation was not succesfull.");
+
             }
+            FileOutputStream out = new FileOutputStream("configuration");
+            applicationProperties.store(out, "DO-NOT-MAKE-ANY-CHANGES");
+            out.close();
         }
         catch (FileNotFoundException fnfex) {
             fnfex.printStackTrace();
