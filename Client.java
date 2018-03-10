@@ -15,54 +15,49 @@ public class Client {
 
     private static String errorChecking(String response) {
         try {
-            try {
-                if (!response.contains(",")) {
-                    if (response.equals("POST_REQUIRED")) {
-                        throw new responseException("Error while sending request. The request must be of type POST.");
-                    }
-                    else if (response.equals("FORM_DATA_MISSING")) {
-                        throw new responseException("Some required fields (username, password, mac, name) were not sent to the server.");
-                    }
-                    else if (response.equals("FORM_DATA_EMPTY")) {
-                        throw new responseException("Some required fields are not set.");
-                    }
-                    else if (response.equals("INVALID_USERNAME")) {
-                        throw new responseException("Invalid username.");
-                    }
-                    else if (response.equals("INVALID_PASSWORD")) {
-                        throw new responseException("Invalid password.");
-                    }
-                    else if (response.equals("INVALID_MAC")) {
-                        throw new responseException("Invalid mac address.");
-                    }
-                    else if (response.equals("INVALID_NAME")) {
-                        throw new responseException("Invalid controller name.");
-                    }
-                    else if (response.equals("ACCOUNT_DOES_NOT_EXIST")) {
-                        throw new responseException("There is no account matching this username.");
-                    }
-                    else if (response.equals("INCORRECT_PASSWORD")) {
-                        throw new responseException("There is no account matching this password.");
-                    }
-                    else if (response.equals("INCORRECT_PASSWORD")) {
-                        throw new responseException("There is no account matching this password.");
-                    }
-                    else if (response.equals("MAC_ADDRESS_DUPLICATE")) {
-                        throw new responseException("A hub with the same MAC address already exists.");
-                    }
-                    else if (response.equals("HUB_NAME_DUPLICATE")) {
-                        throw new responseException("A hub with the same name already exists.");
-                    }
+            if (!response.contains(",")) {
+                if (response.equals("POST_REQUIRED")) {
+                    throw new responseException("Error while sending request. The request must be of type POST.");
+                }
+                else if (response.equals("FORM_DATA_MISSING")) {
+                    throw new responseException("Some required fields (username, password, mac, name) were not sent to the server.");
+                }
+                else if (response.equals("FORM_DATA_EMPTY")) {
+                    throw new responseException("Some required fields are not set.");
+                }
+                else if (response.equals("INVALID_USERNAME")) {
+                    throw new responseException("Invalid username.");
+                }
+                else if (response.equals("INVALID_PASSWORD")) {
+                    throw new responseException("Invalid password.");
+                }
+                else if (response.equals("INVALID_MAC")) {
+                    throw new responseException("Invalid mac address.");
+                }
+                else if (response.equals("INVALID_NAME")) {
+                    throw new responseException("Invalid controller name.");
+                }
+                else if (response.equals("ACCOUNT_DOES_NOT_EXIST")) {
+                    throw new responseException("There is no account matching this username.");
+                }
+                else if (response.equals("INCORRECT_PASSWORD")) {
+                    throw new responseException("There is no account matching this password.");
+                }
+                else if (response.equals("INCORRECT_PASSWORD")) {
+                    throw new responseException("There is no account matching this password.");
+                }
+                else if (response.equals("MAC_ADDRESS_DUPLICATE")) {
+                    throw new responseException("A hub with the same MAC address already exists.");
+                }
+                else if (response.equals("HUB_NAME_DUPLICATE")) {
+                    throw new responseException("A hub with the same name already exists.");
                 }
             }
-            catch (responseException rex) {
-                exceptionFlag = true;
-                answer = rex.getMessage();
-                System.out.println(rex.getMessage());
-            }
         }
-        catch (Exception ex) {
-            ex.printStackTrace();
+        catch (responseException rex) {
+            exceptionFlag = true;
+            answer = rex.getMessage();
+            System.out.println(rex.getMessage());
         }
         return answer;
     }
