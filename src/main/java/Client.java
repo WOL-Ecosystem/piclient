@@ -64,7 +64,7 @@ public class Client {
 
     public static void main (String[] args) {
         try {
-            File configuration = new File("configuration");
+            File configuration = new File("src/main/java/configuration");
 
             Properties applicationProperties = new Properties();
 

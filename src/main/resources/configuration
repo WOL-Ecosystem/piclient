@@ -1,0 +1,10 @@
+#DO-NOT-MAKE-ANY-CHANGES
+#Sat Mar 10 02:32:52 EET 2018
+postMethod=ping
+handshakeAddress=https\://wol.sht.gr/backend/handshake
+controllerName=icarus
+pingAddress=https\://wol.sht.gr/backend/ping
+uuid=d6e390ef-33f4-4cdf-982f-2228227a0b6b
+mac=2C56DC793354
+username=geocfu
+token=$2y$10$LecDMHMWZRgLS.I19kn8U.xG95MR3RPneo.ulizjRP5Rt4TIO8TkO
