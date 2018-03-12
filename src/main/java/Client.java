@@ -111,7 +111,7 @@ public class Client {
                 }
                 else if (applicationProperties.getProperty("postMethod") == "ping") {
                     //magic here t(O.Ot)
-                    MagicPacket wakeTarget = new MagicPacket(credentials);
+                    //MagicPacket wakeTarget = new MagicPacket(credentials);
                 }
             }
             else {
