@@ -71,16 +71,10 @@ public class Client {
             if(configuration.exists() && !configuration.isDirectory()) {
                 FileInputStream in = new FileInputStream("configuration");
                 applicationProperties.load(in);
-                /*
-                if (applicationProperties.contains()) {
 
-                }
-                */
                 if (applicationProperties.getProperty("postMethod") != "ping") {
                     applicationProperties.setProperty("postMethod", "ping");
                 }
-
-                //wake on lan functionality
 
                 in.close();
             }
@@ -92,7 +86,7 @@ public class Client {
                 handshakeConfiguration = new Handshake();
                 applicationProperties.setProperty("username", handshakeConfiguration.getUsername());
                 applicationProperties.setProperty("controllerName", handshakeConfiguration.getControllerName());
-                applicationProperties.setProperty("mac", handshakeConfiguration.getMacAddress());
+                applicationProperties.setProperty("controllerMac", handshakeConfiguration.getMacAddress());
 
                 applicationProperties.setProperty("postMethod", "handshake");
 
@@ -104,29 +98,33 @@ public class Client {
             credentials.put("pingAddress", applicationProperties.getProperty("pingAddress").replace("\\", ""));
             credentials.put("username", applicationProperties.getProperty("username"));
             credentials.put("controllerName", applicationProperties.getProperty("controllerName"));
-            credentials.put("mac", applicationProperties.getProperty("mac"));
+            credentials.put("mac", applicationProperties.getProperty("ControllerMac"));
 
             POSTConfiguration = new POST(credentials);
+            postResponse = POSTConfiguration.getResponse().toString();
 
-            if (applicationProperties.getProperty("postMethod") == "handshake") {
-                postResponse = POSTConfiguration.getResponse().toString();
-                if (errorChecking(postResponse) == null) {//todo only respond to know errors and messages
+            if (errorChecking(postResponse) == null) {
+                if (applicationProperties.getProperty("postMethod") == "handshake") {
                     postResponseParts = postResponse.split("\\,", 3);
                     applicationProperties.setProperty("uuid", postResponseParts[1]);
                     applicationProperties.setProperty("token", postResponseParts[2]);
                 }
-                else {
-                    System.out.println("\nconfiguration creation was not succesfull.");
+                else if (applicationProperties.getProperty("postMethod") == "ping") {
+                    //magic here t(O.Ot)
+                    MagicPacket wakeTarget = new MagicPacket(credentials);
                 }
             }
-            else if (applicationProperties.getProperty("postMethod") == "ping") {
-                //magic goes here
+            else {
+                System.out.println("\nServer responded with an unknown respone.");
             }
 
             if (!exceptionFlag) {
                 FileOutputStream out = new FileOutputStream("configuration");
                 applicationProperties.store(out, "DO-NOT-MAKE-ANY-CHANGES");
                 out.close();
+            }
+            else {
+                System.out.println("\nConfiguration creation was not succesfull.");
             }
 
         }
