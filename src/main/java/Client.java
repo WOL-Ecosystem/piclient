@@ -9,7 +9,7 @@ public class Client {
     private static Handshake handshakeConfiguration;
     private static POST POSTConfiguration;
 
-    private static String postResponse, answer = null;
+    private static String postResponse, answer;
     private static String[] postResponseParts;
     private static boolean exceptionFlag;
 
@@ -52,11 +52,14 @@ public class Client {
                 else if (response.equals("HUB_NAME_DUPLICATE")) {
                     throw new responseException("A hub with the same name already exists.");
                 }
+                else {
+                    answer = "validResponse";
+                }
             }
         }
         catch (responseException rex) {
             exceptionFlag = true;
-            answer = rex.getMessage();
+            answer = "invalidResponse";
             System.out.println(rex.getMessage());
         }
         return answer;
@@ -101,32 +104,29 @@ public class Client {
             credentials.put("mac", applicationProperties.getProperty("ControllerMac"));
 
             POSTConfiguration = new POST(credentials);
-            postResponse = POSTConfiguration.getResponse().toString();
+            if (POSTConfiguration.isSuccessfull()) {
 
-            if (errorChecking(postResponse) == null) {
-                if (applicationProperties.getProperty("postMethod") == "handshake") {
-                    postResponseParts = postResponse.split("\\,", 3);
-                    applicationProperties.setProperty("uuid", postResponseParts[1]);
-                    applicationProperties.setProperty("token", postResponseParts[2]);
-                }
-                else if (applicationProperties.getProperty("postMethod") == "ping") {
-                    //magic here t(O.Ot)
-                    //MagicPacket wakeTarget = new MagicPacket(credentials);
+                postResponse = POSTConfiguration.getResponse().toString();
+
+                if (errorChecking(postResponse).equals("validResponse")) {
+                    if (applicationProperties.getProperty("postMethod") == "handshake") {
+                        postResponseParts = postResponse.split("(,)", 3);
+                        applicationProperties.setProperty("uuid", postResponseParts[1]);
+                        applicationProperties.setProperty("token", postResponseParts[2]);
+
+                        FileOutputStream out = new FileOutputStream("configuration");
+                        applicationProperties.store(out, "DO-NOT-MAKE-ANY-CHANGES");
+                        out.close();
+                    }
+                    else if (applicationProperties.getProperty("postMethod") == "ping") {
+                        //magic here t(O.Ot)
+                        //MagicPacket wakeTarget = new MagicPacket(credentials);
+                    }
                 }
             }
             else {
-                System.out.println("\nServer responded with an unknown respone.");
+                System.out.println("POST attempt was unsuccessfull");
             }
-
-            if (!exceptionFlag) {
-                FileOutputStream out = new FileOutputStream("configuration");
-                applicationProperties.store(out, "DO-NOT-MAKE-ANY-CHANGES");
-                out.close();
-            }
-            else {
-                System.out.println("\nConfiguration creation was not succesfull.");
-            }
-
         }
         catch (FileNotFoundException fnfex) {
             fnfex.printStackTrace();
