@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.*;
+import java.net.*;
 
 public class Client {
 
@@ -8,10 +9,13 @@ public class Client {
     private static APIEndpoint APIConfiguration;
     private static Handshake handshakeConfiguration;
     private static POST POSTConfiguration;
+    private static LocalNetworkScanner scan;
 
     private static String postResponse, answer;
     private static String[] postResponseParts;
     private static boolean exceptionFlag;
+    private static byte[] hostIP;
+    private static int localIPSuffix;
 
     private static String errorChecking(String response) {
         try {
@@ -67,15 +71,17 @@ public class Client {
 
     public static void main (String[] args) {
         try {
-            File configuration = new File("src/main/java/configuration");
+            File configuration = new File("src/main/resources/configuration");
 
             Properties applicationProperties = new Properties();
 
             if(configuration.exists() && !configuration.isDirectory()) {
-                FileInputStream in = new FileInputStream("configuration");
+                FileInputStream in = new FileInputStream("src/main/resources/configuration");
                 applicationProperties.load(in);
 
+                //todo: check if all the fields have not been tampered
                 if (applicationProperties.getProperty("postMethod") != "ping") {
+
                     applicationProperties.setProperty("postMethod", "ping");
                 }
 
@@ -119,8 +125,23 @@ public class Client {
                         out.close();
                     }
                     else if (applicationProperties.getProperty("postMethod") == "ping") {
-                        //magic here t(O.Ot)
                         //MagicPacket wakeTarget = new MagicPacket(credentials);
+                        try {
+                            hostIP = InetAddress.getLocalHost().getAddress();
+                            for (localIPSuffix = 1; localIPSuffix <= 254; localIPSuffix++) {
+                                scan = new LocalNetworkScanner(localIPSuffix, hostIP);
+                                scan.start();
+                                Thread.sleep(20);
+                            }
+                        }
+                        catch (InterruptedException iee) {
+                            iee.printStackTrace();
+                            Thread.currentThread().interrupt();
+                            System.out.println("Failed");
+                        }
+                        catch (UnknownHostException uhe) {
+                            uhe.printStackTrace();
+                        }
                     }
                 }
             }
