@@ -1,15 +1,14 @@
-## This is a WIP; this project is not ready. Do not procceed with the instructions mentioned bellow untill further notice!
-
 # WOL (aka. Wake On Lan)
 
 WOL is a java project meant to run on any raspberry pi. As the name implies, with this project you will be able to remotely boot or power off your computer/s from anywhere.
 
+## Current status
+
+This project is still a WIP. With that being said, please do not procced with the following instruction until further notice.    
+
 ## Getting Started
 
-WOL is not a stand-alone service, is a client who runs in the background using cron's job. And as a client, it requires a backend server.  
-Lucky for you, the backend server is located [here](https://github.com/ShtHappens796/Wake-On-LAN) and is created by [ShtHappens796](https://github.com/ShtHappens796).  
-The service can be used from anyone and of course **is free**. An option to host the backend server of yours is there. See the instructions
-[here](https://github.com/ShtHappens796/Wake-On-LAN#instructions) on how.
+WOL is not a stand-alone service, is a client who runs in the background using cron's job. And as a client, it requires a backend server.   
 
 ### Prerequisites
 
@@ -17,14 +16,9 @@ The service can be used from anyone and of course **is free**. An option to host
 - Java SE 7 and up although I recommend that you download the lattest release.
 
 
-### Installing
+### Installing  
 
-- #### Using the server backend we provide
- **Security over all! The only user-sensitive data we store is username, email and the MAC address/es. Passwords are irreversibly hashed and then stored.**  
-
-So after clearing that out lets procceed.  
-
- You need to register an account at https://wol.sht.gr/register.  
+ You need to register an account at (TODO).  
 Then, create a local folder anywhere on your raspberry called, WOL.
 ```
 $ mkdir WOL
@@ -67,12 +61,6 @@ After that, you will be prompted to input your username and password.
 
  **DONE, enjoy!**
 
-- #### Running your own backend php Server
-
- For the installation and configuration of the server look [here](https://github.com/ShtHappens796/Wake-On-LAN).  
-
- After you have successfully build your server, follow the above mentioned instructions.
-
 ## Example Use
 
 TODO
@@ -82,7 +70,9 @@ TODO
 If you want to contribute to the project, you are more than welcome. Simply, fork the repository, commit your code and create a pull request.
 
 ## Versions
-  - version 0.1.0 - initial version  
+  - version 0.3.1-pre.alpha
+  - version 0.2.7-pre.alpha
+  - version 0.2.5-pre.alpha  
 
 ## Authors
 
