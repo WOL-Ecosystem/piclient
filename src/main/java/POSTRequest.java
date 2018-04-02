@@ -1,10 +1,9 @@
 import java.io.*;
 import java.util.*;
 import java.net.*;
-//import java.net.InetAddress;
 import javax.net.ssl.*;
 
-public class POST {
+public class POSTRequest {
 	private int responseCode;
 	private StringBuffer response;
 	private String url, urlParameters, stringDomain;
@@ -12,7 +11,7 @@ public class POST {
 	private InetAddress domainToPOST;
 	private boolean isSuccessfullState;
 
-	public POST (Map<String, String> credentials) {
+	public POSTRequest (Map<String, String> credentials) {
 		try {
 			if (credentials.get("postMethod") == "handshake"){
 				this.url = credentials.get("handshakeAddress");
@@ -24,7 +23,7 @@ public class POST {
 			}
 			else if (credentials.get("postMethod") == "ping") {
 				this.url = credentials.get("pingAddress");
-				//MUST ADD AFTER TASOS CREATES PINGING
+				//
 				this.urlParameters = ("username=" + credentials.get("username") +
 				"&uuid=" + credentials.get("uuid") +
 				"&token=" + credentials.get("token") +
@@ -91,10 +90,5 @@ public class POST {
 
 	public StringBuffer getResponse() {
 		return this.response;
-	}
-
-	public String toString() {
-		return "\nResponse Code: " + getResponseCode() +
-					"\nResponse: " + getResponse();
 	}
 }

@@ -8,7 +8,7 @@ public class Client {
 
     private static APIEndpoint APIConfiguration;
     private static Handshake handshakeConfiguration;
-    private static POST POSTConfiguration;
+    private static POSTRequest POSTConfiguration;
     private static LocalNetworkScanner scan;
 
     private static String postResponse, answer;
@@ -80,6 +80,9 @@ public class Client {
                 applicationProperties.load(in);
 
                 //todo: check if all the fields have not been tampered
+                if (in.contains()) {
+
+                }
                 if (applicationProperties.getProperty("postMethod") != "ping") {
 
                     applicationProperties.setProperty("postMethod", "ping");
@@ -109,44 +112,31 @@ public class Client {
             credentials.put("controllerName", applicationProperties.getProperty("controllerName"));
             credentials.put("mac", applicationProperties.getProperty("ControllerMac"));
 
-            POSTConfiguration = new POST(credentials);
-            if (POSTConfiguration.isSuccessfull()) {
+            POSTConfiguration = new POSTRequest(credentials);
 
-                postResponse = POSTConfiguration.getResponse().toString();
+            postResponse = POSTConfiguration.getResponse().toString();
 
-                if (errorChecking(postResponse).equals("validResponse")) {
-                    if (applicationProperties.getProperty("postMethod") == "handshake") {
-                        postResponseParts = postResponse.split("(,)", 3);
-                        applicationProperties.setProperty("uuid", postResponseParts[1]);
-                        applicationProperties.setProperty("token", postResponseParts[2]);
+            if (errorChecking(postResponse).equals("validResponse")) {
 
-                        FileOutputStream out = new FileOutputStream("configuration");
-                        applicationProperties.store(out, "DO-NOT-MAKE-ANY-CHANGES");
-                        out.close();
-                    }
-                    else if (applicationProperties.getProperty("postMethod") == "ping") {
-                        //MagicPacket wakeTarget = new MagicPacket(credentials);
-                        try {
-                            hostIP = InetAddress.getLocalHost().getAddress();
-                            for (localIPSuffix = 1; localIPSuffix <= 254; localIPSuffix++) {
-                                scan = new LocalNetworkScanner(localIPSuffix, hostIP);
-                                scan.start();
-                                Thread.sleep(20);
-                            }
-                        }
-                        catch (InterruptedException iee) {
-                            iee.printStackTrace();
-                            Thread.currentThread().interrupt();
-                            System.out.println("Failed");
-                        }
-                        catch (UnknownHostException uhe) {
-                            uhe.printStackTrace();
-                        }
-                    }
+                if (applicationProperties.getProperty("postMethod") == "handshake") {
+                    postResponseParts = postResponse.split("(,)", 3);
+                    applicationProperties.setProperty("uuid", postResponseParts[1]);
+                    applicationProperties.setProperty("token", postResponseParts[2]);
+
+                    FileOutputStream out = new FileOutputStream("src/main/resources/configuration");
+                    applicationProperties.store(out, "DO-NOT-MAKE-ANY-CHANGES");
+                    out.close();
                 }
-            }
-            else {
-                System.out.println("POST attempt was unsuccessfull");
+                else if (applicationProperties.getProperty("postMethod") == "ping") {
+                    hostIP = InetAddress.getLocalHost().getAddress();
+                    for (localIPSuffix = 1; localIPSuffix <= 254; localIPSuffix++) {
+                        scan = new LocalNetworkScanner(localIPSuffix, hostIP);
+                        scan.start();
+                        Thread.sleep(20);
+                    }
+
+                    //MagicPacket wakeTarget = new MagicPacket(credentials);
+                }
             }
         }
         catch (FileNotFoundException fnfex) {
@@ -154,6 +144,10 @@ public class Client {
         }
         catch (IOException ioex) {
             ioex.printStackTrace();
+        }
+        catch (InterruptedException iee) {
+            iee.printStackTrace();
+            Thread.currentThread().interrupt();
         }
     }
 }
