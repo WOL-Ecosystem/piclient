@@ -7,7 +7,7 @@ public class Client {
     private static Map<String, String> credentials = new HashMap<String, String>();
 
     private static APIEndpoint APIConfiguration;
-    private static Handshake handshakeConfiguration;
+    private static Registration registrationConfiguration;
     private static POSTRequest POSTConfiguration;
     private static LocalNetworkScanner scan;
 
@@ -24,37 +24,25 @@ public class Client {
                     throw new responseException("Error while sending request. The request must be of type POST.");
                 }
                 else if (response.equals("FORM_DATA_MISSING")) {
-                    throw new responseException("Some required fields (username, password, mac, name) were not sent to the server.");
+                    throw new responseException("Some required fields (ex. email, password, local_pc_names) were not sent to the server.");
                 }
                 else if (response.equals("FORM_DATA_EMPTY")) {
-                    throw new responseException("Some required fields are not set.");
+                    throw new responseException("Some required fields are not set (ex. email, password, local_pc_names).");
                 }
-                else if (response.equals("INVALID_USERNAME")) {
-                    throw new responseException("Invalid username.");
+                else if (response.equals("INVALID_EMAIL")) {
+                    throw new responseException("Invalid email.");
                 }
                 else if (response.equals("INVALID_PASSWORD")) {
                     throw new responseException("Invalid password.");
                 }
-                else if (response.equals("INVALID_MAC")) {
-                    throw new responseException("Invalid mac address.");
-                }
-                else if (response.equals("INVALID_NAME")) {
-                    throw new responseException("Invalid controller name.");
-                }
                 else if (response.equals("ACCOUNT_DOES_NOT_EXIST")) {
-                    throw new responseException("There is no account matching this username.");
+                    throw new responseException("There is no account matching this email.");
+                }
+                else if (response.equals("ACCOUNT_ALREADY_EXISTS")) {
+                    throw new responseException("There is already an account matching this email.");
                 }
                 else if (response.equals("INCORRECT_PASSWORD")) {
                     throw new responseException("There is no account matching this password.");
-                }
-                else if (response.equals("INCORRECT_PASSWORD")) {
-                    throw new responseException("There is no account matching this password.");
-                }
-                else if (response.equals("MAC_ADDRESS_DUPLICATE")) {
-                    throw new responseException("A hub with the same MAC address already exists.");
-                }
-                else if (response.equals("HUB_NAME_DUPLICATE")) {
-                    throw new responseException("A hub with the same name already exists.");
                 }
                 else {
                     answer = "validResponse";
@@ -71,46 +59,46 @@ public class Client {
 
     public static void main (String[] args) {
         try {
-            File configuration = new File("src/main/resources/configuration");
+            File configuration = new File("configuration");
 
             Properties applicationProperties = new Properties();
 
             if(configuration.exists() && !configuration.isDirectory()) {
-                FileInputStream in = new FileInputStream("src/main/resources/configuration");
+                FileInputStream in = new FileInputStream("configuration");
                 applicationProperties.load(in);
 
                 //todo: check if all the fields have not been tampered
-                if (in.contains()) {
 
-                }
-                if (applicationProperties.getProperty("postMethod") != "ping") {
+                if (applicationProperties.getProperty("postMethod") != "connection") {
+                    applicationProperties.setProperty("postMethod", "connection");
 
-                    applicationProperties.setProperty("postMethod", "ping");
+                    hostIP = InetAddress.getLocalHost().getAddress();
+                    for (localIPSuffix = 1; localIPSuffix <= 254; localIPSuffix++) {
+                        scan = new LocalNetworkScanner(localIPSuffix, hostIP);
+                        scan.start();
+                        Thread.sleep(20);
+                    }
                 }
 
                 in.close();
             }
             else {
                 APIConfiguration = new APIEndpoint();
-                applicationProperties.setProperty("handshakeAddress", APIConfiguration.getHandshakeAddress());
-                applicationProperties.setProperty("pingAddress", APIConfiguration.getPingAddress());
+                applicationProperties.setProperty("registrationAddress", APIConfiguration.getRegistrationAddress());
+                applicationProperties.setProperty("connectionAddress", APIConfiguration.getConnectionAddress());
 
-                handshakeConfiguration = new Handshake();
-                applicationProperties.setProperty("username", handshakeConfiguration.getUsername());
-                applicationProperties.setProperty("controllerName", handshakeConfiguration.getControllerName());
-                applicationProperties.setProperty("controllerMac", handshakeConfiguration.getMacAddress());
+                registrationConfiguration = new Registration();
+                applicationProperties.setProperty("email", registrationConfiguration.getEmail());
+                applicationProperties.setProperty("password", registrationConfiguration.getAuthPassword());
 
-                applicationProperties.setProperty("postMethod", "handshake");
-
-                credentials.put("password", handshakeConfiguration.getPassword());
+                applicationProperties.setProperty("postMethod", "registration");
             }
 
             credentials.put("postMethod", applicationProperties.getProperty("postMethod"));
-            credentials.put("handshakeAddress", applicationProperties.getProperty("handshakeAddress").replace("\\", ""));
-            credentials.put("pingAddress", applicationProperties.getProperty("pingAddress").replace("\\", ""));
-            credentials.put("username", applicationProperties.getProperty("username"));
-            credentials.put("controllerName", applicationProperties.getProperty("controllerName"));
-            credentials.put("mac", applicationProperties.getProperty("ControllerMac"));
+            credentials.put("registrationAddress", applicationProperties.getProperty("registrationAddress").replace("\\", ""));
+            credentials.put("connectionAddress", applicationProperties.getProperty("connectionAddress").replace("\\", ""));
+            credentials.put("email", applicationProperties.getProperty("email"));
+            credentials.put("password", applicationProperties.getProperty("password"));
 
             POSTConfiguration = new POSTRequest(credentials);
 
@@ -118,22 +106,14 @@ public class Client {
 
             if (errorChecking(postResponse).equals("validResponse")) {
 
-                if (applicationProperties.getProperty("postMethod") == "handshake") {
-                    postResponseParts = postResponse.split("(,)", 3);
-                    applicationProperties.setProperty("uuid", postResponseParts[1]);
-                    applicationProperties.setProperty("token", postResponseParts[2]);
-
-                    FileOutputStream out = new FileOutputStream("src/main/resources/configuration");
+                if (applicationProperties.getProperty("postMethod") == "registration") {
+                    System.out.println(postResponse);
+                    FileOutputStream out = new FileOutputStream("configuration");
                     applicationProperties.store(out, "DO-NOT-MAKE-ANY-CHANGES");
                     out.close();
                 }
-                else if (applicationProperties.getProperty("postMethod") == "ping") {
-                    hostIP = InetAddress.getLocalHost().getAddress();
-                    for (localIPSuffix = 1; localIPSuffix <= 254; localIPSuffix++) {
-                        scan = new LocalNetworkScanner(localIPSuffix, hostIP);
-                        scan.start();
-                        Thread.sleep(20);
-                    }
+                else if (applicationProperties.getProperty("postMethod") == "connection") {
+
 
                     //MagicPacket wakeTarget = new MagicPacket(credentials);
                 }

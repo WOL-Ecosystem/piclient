@@ -13,22 +13,18 @@ public class POSTRequest {
 
 	public POSTRequest (Map<String, String> credentials) {
 		try {
-			if (credentials.get("postMethod") == "handshake"){
-				this.url = credentials.get("handshakeAddress");
+			if (credentials.get("postMethod") == "registration"){
+				this.url = credentials.get("registrationAddress");
 
-				this.urlParameters = ("username=" + credentials.get("username") +
-				"&password=" + credentials.get("password") +
-				"&mac=" + credentials.get("mac") +
-				"&name=" + credentials.get("controllerName"));
+				this.urlParameters = ("email=" + credentials.get("email") +
+				"&password=" + credentials.get("password"));
 			}
-			else if (credentials.get("postMethod") == "ping") {
-				this.url = credentials.get("pingAddress");
+			else if (credentials.get("postMethod") == "connection") {
+				this.url = credentials.get("connectionAddress");
 				//
-				this.urlParameters = ("username=" + credentials.get("username") +
-				"&uuid=" + credentials.get("uuid") +
-				"&token=" + credentials.get("token") +
-				"&mac=" + credentials.get("mac") +
-				"&status=" + credentials.get("status"));
+				this.urlParameters = ("email=" + credentials.get("email") +
+				"&password=" + credentials.get("password") +
+				"&local_pc_names=" + credentials.get("local_pc_names"));
 			}
 
 			this.urlParts = this.url.split("(//)");
@@ -36,7 +32,7 @@ public class POSTRequest {
 			this.domainParts = this.stringDomain.split("(/)");
 			this.domainToPOST = InetAddress.getByName(this.domainParts[0]);
 
-			if (domainToPOST.isReachable(3000)) {
+			if (this.domainToPOST.isReachable(3000)) {
 				isSuccessfullState = true;
 				URL obj = new URL(this.url);
 				HttpsURLConnection connection =

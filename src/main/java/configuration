@@ -1,0 +1,7 @@
+#DO-NOT-MAKE-ANY-CHANGES
+#Mon Apr 09 18:25:12 EEST 2018
+connectionAddress=https\://www.geocfu.me/wols/connection.php
+password=TestTest1@
+postMethod=registration
+registrationAddress=https\://www.geocfu.me/wols/registration.php
+email=geocfu@gmail.com
