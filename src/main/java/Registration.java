@@ -5,10 +5,10 @@ import java.util.regex.*;
 
 public class Registration {
 
-    private String userInput, emailRegex, email, passwordRegex, password, repeatPassword, authPassword;
-    private Pattern emailPattern, passwordPattern;
+    private String userInput, usernameRegex, username, passwordRegex, password, repeatPassword, authPassword;
+    private Pattern usernamePattern, passwordPattern;
     private Matcher testInput;
-    private boolean emailFlag, passwordFlag, repeatPasswordFlag, passwordsMatchFlag;
+    private boolean usernameFlag, passwordFlag, repeatPasswordFlag, passwordsMatchFlag;
     private Scanner sc;
 
     public Registration() {
@@ -18,22 +18,23 @@ public class Registration {
         " please register at (TODO)");
 
         // checking if the username complies to legal characters
-        this.emailRegex = "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
-        this.emailPattern = Pattern.compile(this.emailRegex);
-        this.emailFlag = true;
+        this.usernameRegex = "^([a-zA-Z0-9]){5,20}$";
+        this.usernamePattern = Pattern.compile(this.usernameRegex);
+        this.usernameFlag = true;
         do {
-            System.out.print("Email: ");
+            System.out.print("Username: ");
             //this.userInput = sc.nextLine();
-            this.userInput = "geocfu@gmail.com"; // testing
-            this.testInput = emailPattern.matcher(this.userInput);
+            this.userInput = "geocfu"; // testing
+            this.testInput = usernamePattern.matcher(this.userInput);
             if (testInput.matches() == true) {
-                this.emailFlag = false;
-                this.email = this.userInput;
+                this.usernameFlag = false;
+                this.username = this.userInput;
             }
             else {
-                System.out.println("Invalid email.");
+                System.out.println("Invalid username.\nUsername must me at least 5 to maximum 20 characters" +
+                " and must not contain any sepcial characters.");
             }
-        } while (this.emailFlag);
+        } while (this.usernameFlag);
 
 
         // checking if the password complies to legal characters
@@ -89,8 +90,8 @@ public class Registration {
 
     }
 
-    public String getEmail() {
-        return this.email;
+    public String getUsername() {
+        return this.username;
     }
 
     public String getAuthPassword() {

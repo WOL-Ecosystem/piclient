@@ -13,18 +13,19 @@ public class POSTRequest {
 
 	public POSTRequest (Map<String, String> credentials) {
 		try {
-			if (credentials.get("postMethod") == "registration"){
+			if (credentials.get("postMethod").equals("registration")){
 				this.url = credentials.get("registrationAddress");
 
-				this.urlParameters = ("email=" + credentials.get("email") +
+				this.urlParameters = ("username=" + credentials.get("username") +
 				"&password=" + credentials.get("password"));
 			}
-			else if (credentials.get("postMethod") == "connection") {
+			else if (credentials.get("postMethod").equals("connection")) {
 				this.url = credentials.get("connectionAddress");
-				//
-				this.urlParameters = ("email=" + credentials.get("email") +
-				"&password=" + credentials.get("password") +
-				"&local_pc_names=" + credentials.get("local_pc_names"));
+
+				this.urlParameters = ("username=" + credentials.get("username") +
+				"&auth_key=" + credentials.get("token") +
+				//to be changed
+				"&local_pc_names=" + credentials.get("username"));
 			}
 
 			this.urlParts = this.url.split("(//)");

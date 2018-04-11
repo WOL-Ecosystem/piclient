@@ -11,42 +11,39 @@ public class Client {
     private static POSTRequest POSTConfiguration;
     private static LocalNetworkScanner scan;
 
-    private static String postResponse, answer;
-    private static String[] postResponseParts;
+    private static String postResponse, postResponseApiKey, answer;
     private static boolean exceptionFlag;
     private static byte[] hostIP;
     private static int localIPSuffix;
 
     private static String errorChecking(String response) {
         try {
-            if (!response.contains(",")) {
-                if (response.equals("POST_REQUIRED")) {
-                    throw new responseException("Error while sending request. The request must be of type POST.");
-                }
-                else if (response.equals("FORM_DATA_MISSING")) {
-                    throw new responseException("Some required fields (ex. email, password, local_pc_names) were not sent to the server.");
-                }
-                else if (response.equals("FORM_DATA_EMPTY")) {
-                    throw new responseException("Some required fields are not set (ex. email, password, local_pc_names).");
-                }
-                else if (response.equals("INVALID_EMAIL")) {
-                    throw new responseException("Invalid email.");
-                }
-                else if (response.equals("INVALID_PASSWORD")) {
-                    throw new responseException("Invalid password.");
-                }
-                else if (response.equals("ACCOUNT_DOES_NOT_EXIST")) {
-                    throw new responseException("There is no account matching this email.");
-                }
-                else if (response.equals("ACCOUNT_ALREADY_EXISTS")) {
-                    throw new responseException("There is already an account matching this email.");
-                }
-                else if (response.equals("INCORRECT_PASSWORD")) {
-                    throw new responseException("There is no account matching this password.");
-                }
-                else {
-                    answer = "validResponse";
-                }
+            if (response.equals("POST_REQUIRED")) {
+                throw new responseException("Error while sending request. The request must be of type POST.");
+            }
+            else if (response.equals("FORM_DATA_MISSING")) {
+                throw new responseException("Some required fields were not sent to the server.");
+            }
+            else if (response.equals("FORM_DATA_EMPTY")) {
+                throw new responseException("Some required fields are not set.");
+            }
+            else if (response.equals("INVALID_USERNAME")) {
+                throw new responseException("Invalid username.");
+            }
+            else if (response.equals("INVALID_AUTH_KEY")) {
+                throw new responseException("Invalid authentication key.");
+            }
+            else if (response.equals("ACCOUNT_DOES_NOT_EXIST")) {
+                throw new responseException("There is no account matching this email.");
+            }
+            else if (response.equals("ACCOUNT_ALREADY_EXISTS")) {
+                throw new responseException("There is already an account matching this username.");
+            }
+            else if (response.equals("INCORRECT_AUTH_KEY")) {
+                throw new responseException("There is no account matching this authentication key.");
+            }
+            else {
+                answer = "validResponse";
             }
         }
         catch (responseException rex) {
@@ -66,21 +63,26 @@ public class Client {
             if(configuration.exists() && !configuration.isDirectory()) {
                 FileInputStream in = new FileInputStream("configuration");
                 applicationProperties.load(in);
+                in.close();
 
-                //todo: check if all the fields have not been tampered
-
-                if (applicationProperties.getProperty("postMethod") != "connection") {
+                if (applicationProperties.getProperty("postMethod").equals("registration")) {
                     applicationProperties.setProperty("postMethod", "connection");
+                    System.out.println("first connection after registration");
 
                     hostIP = InetAddress.getLocalHost().getAddress();
+
                     for (localIPSuffix = 1; localIPSuffix <= 254; localIPSuffix++) {
                         scan = new LocalNetworkScanner(localIPSuffix, hostIP);
                         scan.start();
                         Thread.sleep(20);
                     }
-                }
 
-                in.close();
+
+                }
+                else if (applicationProperties.getProperty("postMethod").equals("connection")) {
+                    System.out.println("Normal operation");
+                }
+                credentials.put("token", applicationProperties.getProperty("token"));
             }
             else {
                 APIConfiguration = new APIEndpoint();
@@ -88,8 +90,8 @@ public class Client {
                 applicationProperties.setProperty("connectionAddress", APIConfiguration.getConnectionAddress());
 
                 registrationConfiguration = new Registration();
-                applicationProperties.setProperty("email", registrationConfiguration.getEmail());
-                applicationProperties.setProperty("password", registrationConfiguration.getAuthPassword());
+                applicationProperties.setProperty("username", registrationConfiguration.getUsername());
+                credentials.put("password", registrationConfiguration.getAuthPassword());
 
                 applicationProperties.setProperty("postMethod", "registration");
             }
@@ -97,8 +99,8 @@ public class Client {
             credentials.put("postMethod", applicationProperties.getProperty("postMethod"));
             credentials.put("registrationAddress", applicationProperties.getProperty("registrationAddress").replace("\\", ""));
             credentials.put("connectionAddress", applicationProperties.getProperty("connectionAddress").replace("\\", ""));
-            credentials.put("email", applicationProperties.getProperty("email"));
-            credentials.put("password", applicationProperties.getProperty("password"));
+            credentials.put("username", applicationProperties.getProperty("username"));
+
 
             POSTConfiguration = new POSTRequest(credentials);
 
@@ -106,19 +108,27 @@ public class Client {
 
             if (errorChecking(postResponse).equals("validResponse")) {
 
-                if (applicationProperties.getProperty("postMethod") == "registration") {
-                    System.out.println(postResponse);
-                    FileOutputStream out = new FileOutputStream("configuration");
-                    applicationProperties.store(out, "DO-NOT-MAKE-ANY-CHANGES");
-                    out.close();
+                if (applicationProperties.getProperty("postMethod").equals("registration")) {
+                    if (postResponse.contains("API_KEY")) {
+                        postResponseApiKey = postResponse.substring(12, 76);
+                        applicationProperties.setProperty("token", postResponseApiKey);
+                        System.out.println("You have been registered successfully!");
+                    }
+                    else {
+                        System.out.println("Unknown server response.");
+                    }
                 }
-                else if (applicationProperties.getProperty("postMethod") == "connection") {
-
-
+                else if (applicationProperties.getProperty("postMethod").equals("connection")) {
+                    System.out.println(postResponse);
                     //MagicPacket wakeTarget = new MagicPacket(credentials);
                 }
+                FileOutputStream out = new FileOutputStream("configuration");
+                applicationProperties.store(out, "DO-NOT-MAKE-ANY-CHANGES");
+                out.close();
+
             }
         }
+
         catch (FileNotFoundException fnfex) {
             fnfex.printStackTrace();
         }
@@ -129,5 +139,6 @@ public class Client {
             iee.printStackTrace();
             Thread.currentThread().interrupt();
         }
+
     }
 }

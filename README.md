@@ -1,6 +1,6 @@
-# WOL (aka. Wake On Lan)
+# WOL-Client (aka. Wake on Lan-Client)
 
-WOL is a java project meant to run on any raspberry pi. As the name implies, with this project you will be able to remotely boot or power off your computer/s from anywhere.
+WOL-Client is a java project meant to run on any raspberry pi. As the name implies, with this project you will be able to remotely boot or power off your computer/s from anywhere.
 
 ## Current status
 
@@ -8,7 +8,7 @@ This project is still a WIP. With that being said, please do not procced with th
 
 ## Getting Started
 
-WOL is not a stand-alone service, is a client who runs in the background using cron's job. And as a client, it requires a backend server.   
+WOL-Client is not a stand-alone service, is a client who runs in the background using cron's job. And as a client, it requires a backend server.   
 
 ### Prerequisites
 
@@ -18,7 +18,7 @@ WOL is not a stand-alone service, is a client who runs in the background using c
 
 ### Installing  
 
- You need to register an account at (TODO).  
+You need to register an account at (TODO).  
 Then, create a local folder anywhere on your raspberry called, WOL.
 ```
 $ mkdir WOL

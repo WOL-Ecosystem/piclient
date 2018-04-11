@@ -16,14 +16,13 @@ class LocalNetworkScanner extends Thread {
 
      public void run() {
          try {
-             //this.localIP = InetAddress.getLocalHost().getAddress();
              this.localIP[3] = (byte)lastIpPart;
-             hostToPing = InetAddress.getByAddress(this.localIP);
-             output = hostToPing.toString().substring(1);
-             hostName = hostToPing.getHostName();
+             this.hostToPing = InetAddress.getByAddress(this.localIP);
+             this.output = hostToPing.toString().substring(1);
+             this.hostName = hostToPing.getHostName();
 
-             if (hostToPing.isReachable(2000)) {
-                 System.out.println("Local IP: " + output + " Name: " + hostName);
+             if (this.hostToPing.isReachable(2000)) {
+                 System.out.println("Local IP: " + this.output + " Name: " + this.hostName);
              }
 
          }
@@ -33,22 +32,5 @@ class LocalNetworkScanner extends Thread {
          catch (IOException ioe) {
              ioe.printStackTrace();
          }
-     }
-
-     public static void main(String [] args) {
-         /*
-         try {
-             for (int IPSuffix = 1; IPSuffix <= 254; IPSuffix++) {
-                 LocalNetworkScanner scan = new LocalNetworkScanner(IPSuffix);
-                 scan.start();
-                 Thread.sleep(20);
-             }
-         }
-         catch (InterruptedException iee) {
-             iee.printStackTrace();
-             Thread.currentThread().interrupt();  // set interrupt flag
-             System.out.println("Failed");
-         }
-         */
      }
  }
