@@ -1,7 +1,8 @@
 #DO-NOT-MAKE-ANY-CHANGES
-#Mon Apr 09 18:25:12 EEST 2018
+#Thu Apr 12 18:21:36 EEST 2018
 connectionAddress=https\://www.geocfu.me/wols/connection.php
-password=TestTest1@
-postMethod=registration
+postMethod=connection
 registrationAddress=https\://www.geocfu.me/wols/registration.php
-email=geocfu@gmail.com
+targetMacAddress=01\:23\:EC\:67\:89\:AB
+username=geocfu
+token=28b6ec0dd6d91f8afdaadaf2d9ea6e4b995eef038c7371d74ba3a1f8e4b80bee

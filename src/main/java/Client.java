@@ -13,8 +13,6 @@ public class Client {
 
     private static String postResponse, postResponseApiKey, answer;
     private static boolean exceptionFlag;
-    private static byte[] hostIP;
-    private static int localIPSuffix;
 
     private static String errorChecking(String response) {
         try {
@@ -68,16 +66,6 @@ public class Client {
                 if (applicationProperties.getProperty("postMethod").equals("registration")) {
                     applicationProperties.setProperty("postMethod", "connection");
                     System.out.println("first connection after registration");
-
-                    hostIP = InetAddress.getLocalHost().getAddress();
-
-                    for (localIPSuffix = 1; localIPSuffix <= 254; localIPSuffix++) {
-                        scan = new LocalNetworkScanner(localIPSuffix, hostIP);
-                        scan.start();
-                        Thread.sleep(20);
-                    }
-
-
                 }
                 else if (applicationProperties.getProperty("postMethod").equals("connection")) {
                     System.out.println("Normal operation");
@@ -91,6 +79,8 @@ public class Client {
 
                 registrationConfiguration = new Registration();
                 applicationProperties.setProperty("username", registrationConfiguration.getUsername());
+                applicationProperties.setProperty("targetMacAddress", registrationConfiguration.getMacAddress());
+
                 credentials.put("password", registrationConfiguration.getAuthPassword());
 
                 applicationProperties.setProperty("postMethod", "registration");
@@ -100,6 +90,7 @@ public class Client {
             credentials.put("registrationAddress", applicationProperties.getProperty("registrationAddress").replace("\\", ""));
             credentials.put("connectionAddress", applicationProperties.getProperty("connectionAddress").replace("\\", ""));
             credentials.put("username", applicationProperties.getProperty("username"));
+            credentials.put("targetMacAddress", applicationProperties.getProperty("targetMacAddress").replace("\\", ""));
 
 
             POSTConfiguration = new POSTRequest(credentials);
@@ -135,10 +126,5 @@ public class Client {
         catch (IOException ioex) {
             ioex.printStackTrace();
         }
-        catch (InterruptedException iee) {
-            iee.printStackTrace();
-            Thread.currentThread().interrupt();
-        }
-
     }
 }

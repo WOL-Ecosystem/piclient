@@ -14,6 +14,7 @@ WOL-Client is not a stand-alone service, is a client who runs in the background 
 
 - One Raspberry Pi (if you intent to run the service there).
 - Java SE 7 and up although I recommend that you download the lattest release.
+- Lattest version of nmap (https://nmap.org/).
 
 
 ### Installing  

@@ -1,36 +1,31 @@
 import java.io.*;
-import java.net.*;
 import java.util.*;
+import java.net.*;
 
-class LocalNetworkScanner extends Thread {
+public class LocalNetworkScanner {
 
-     private int lastIpPart;
-     private byte[] localIP;
-     private InetAddress hostToPing;
-     private String output, hostName;
+    private String correctExecutionOutput, errorExecutionOutput;
 
-     LocalNetworkScanner (int lastIpPart, byte[] localIP) {
-         this.lastIpPart = lastIpPart;
-         this.localIP = localIP;
-     }
+    public LocalNetworkScanner() {
+        try {
+            //Execution of the command has started; command runs in the background.
+            Process proc = Runtime.getRuntime().exec("nmap -sn 192.168.1.0/24");
 
-     public void run() {
-         try {
-             this.localIP[3] = (byte)lastIpPart;
-             this.hostToPing = InetAddress.getByAddress(this.localIP);
-             this.output = hostToPing.toString().substring(1);
-             this.hostName = hostToPing.getHostName();
+            //Read console output
+            BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 
-             if (this.hostToPing.isReachable(2000)) {
-                 System.out.println("Local IP: " + this.output + " Name: " + this.hostName);
-             }
+            while ((this.correctExecutionOutput = stdInput.readLine()) != null) {
+                System.err.println(this.correctExecutionOutput);
+            }
 
-         }
-         catch (UnknownHostException uhe) {
-             uhe.printStackTrace();
-         }
-         catch (IOException ioe) {
-             ioe.printStackTrace();
-         }
-     }
- }
+            BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+
+            // read any errors from the attempted command
+            while ((this.errorExecutionOutput = stdError.readLine()) != null) {
+                System.err.println(this.errorExecutionOutput);
+            }
+        } catch (IOException ex) {
+            System.err.println(ex);
+        }
+    }
+}

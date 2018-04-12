@@ -5,17 +5,38 @@ import java.util.regex.*;
 
 public class Registration {
 
-    private String userInput, usernameRegex, username, passwordRegex, password, repeatPassword, authPassword;
-    private Pattern usernamePattern, passwordPattern;
+    private String userInput, usernameRegex, username, passwordRegex, password, repeatPassword, authPassword, macAddress, macAddressRegex;
+    private Pattern usernamePattern, passwordPattern, macAddressPattern;
     private Matcher testInput;
-    private boolean usernameFlag, passwordFlag, repeatPasswordFlag, passwordsMatchFlag;
+    private boolean usernameFlag, passwordFlag, repeatPasswordFlag, passwordsMatchFlag, inputFlag, macAddressFlag;
     private Scanner sc;
+
+    private LocalNetworkScanner scan;
+
+    private void inputMacAddress() {
+        this.macAddressRegex = "^([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}$";
+        this.macAddressPattern = Pattern.compile(this.macAddressRegex);
+        this.macAddressFlag = true;
+        do {
+            System.out.print("Type the mac adress of the target pc: ");
+            this.userInput = this.sc.nextLine();
+            this.testInput = macAddressPattern.matcher(this.userInput);
+            if (testInput.matches() == true) {
+                this.macAddressFlag = false;
+                this.macAddress = this.userInput;
+            }
+            else {
+                System.out.println("Mac address must be like this, ex. 01:23:EC:67:89:AB.");
+            }
+        } while(this.macAddressFlag);
+    }
 
     public Registration() {
         this.sc = new Scanner(System.in);
-        System.out.println("WOLC (aka. Wake On Lan Client) registration!");
+        System.out.println("WOL-Client (aka. Wake On Lan Client) registration!");
         System.out.println("If you do not already have an account," +
         " please register at (TODO)");
+        System.out.println("\nLogin phase.\n");
 
         // checking if the username complies to legal characters
         this.usernameRegex = "^([a-zA-Z0-9]){5,20}$";
@@ -86,8 +107,33 @@ public class Registration {
                 System.out.println("Passwords dont match.");
             }
         } while (this.passwordsMatchFlag);
+        System.out.println("\nNetwork phase.\n");
+        System.out.println("1. Automatic network scan (your target device must be turned on\nand be connected to the WiFi).");
+        System.out.println("2. Manually enter the mac address/es.");
+        System.out.print("Choose an option from above: ");
 
+        this.inputFlag = true;
+        do {
+            //this.userInput = sc.nextLine();
+            this.userInput = Integer.toString(2);
 
+            if (this.userInput.equals("1")) {
+                this.inputFlag = false;
+                this.scan = new LocalNetworkScanner();
+                inputMacAddress();
+            }
+            else if (this.userInput.equals("2")) {
+                this.inputFlag = false;
+
+                System.out.println("Automated untill realease phase");
+                this.macAddress = "01:23:EC:67:89:AB";
+
+                //inputMacAddress();
+            }
+            else {
+                System.out.println("Please select a valid option");
+            }
+        } while (this.inputFlag);
     }
 
     public String getUsername() {
@@ -98,7 +144,9 @@ public class Registration {
         return this.authPassword;
     }
 
-    public static void main(String [] args) {
-        new Registration();
+    public String getMacAddress() {
+        return this.macAddress;
     }
+
+
 }
