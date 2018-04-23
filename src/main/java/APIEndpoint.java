@@ -5,13 +5,12 @@ import java.util.regex.*;
 public class APIEndpoint {
 
     private String registrationAddress, connectionAddress, urlRegex;
-    private char option;
-    private boolean inputFlag, urlFlag, testUrlFlag;
+    private boolean inputFlag, urlFlag;
     private Pattern urlPattern;
     private Matcher input;
     private Scanner sc;
 
-    private boolean testUrl(String URL) {
+    private boolean checkUrl(String URL) {
         this.urlRegex = "^(http:\\/\\/www\\.|https:\\/\\/www\\." +
         "|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]"+
         "{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$";
@@ -27,69 +26,33 @@ public class APIEndpoint {
     public APIEndpoint() {
         this.sc = new Scanner(System.in);
         try {
-            System.out.println("Do you want to use the default registration URL?(y/n)");
             this.inputFlag = true;
             do {
-                //this.option = sc.next().charAt(0);
-                this.option = 'y';
-                if (this.option == 'y' || this.option == 'Y') {
+                System.out.println("Please enter your API endpoint URL for the registration.");
+                //this.registrationAddress = this.sc.nextLine();
+                this.registrationAddress = "https://wols.geocfu.me/api/registration.php";
+                if (checkUrl(this.registrationAddress)) {
                     this.inputFlag = false;
-                    this.registrationAddress = "https://www.geocfu.me/wols/registration.php";
-                    System.out.println("Default registration URL (" +
-                                                this.registrationAddress + ") set.");
-                }
-                else if (this.option == 'n' || this.option == 'N') {
-                    this.inputFlag = false;
-                    this.testUrlFlag = true;
-                    this.sc.nextLine();
-                    do {
-                        System.out.print("Type your custom registration URL: ");
-                        this.registrationAddress = this.sc.nextLine();
-                        if (testUrl(this.registrationAddress)) {
-                            this.testUrlFlag = false;
-                            System.out.println("Custom registration URL (" +
-                                                this.registrationAddress + ") set.");
-                        }
-                        else {
-                            System.out.println("Please input a valid URL.");
-                        }
-                    } while(this.testUrlFlag);
+                    System.out.println("Registration URL (" +
+                                        this.registrationAddress + ") set.");
                 }
                 else {
-                    System.out.println("Please select a valid option");
+                    System.out.println("Please input a valid URL.");
                 }
             } while (this.inputFlag);
 
-            System.out.println("Do you want to use the default connection URL?(y/n)");
             this.inputFlag = true;
             do {
-                //this.option = this.sc.next().charAt(0);
-                this.option = 'y';
-                if (this.option == 'y' || this.option == 'Y') {
+                System.out.println("Please enter your API endpoint URL for the connection.");
+                //this.connectionAddress = this.sc.nextLine();
+                this.connectionAddress = "https://wols.geocfu.me/api/connection.php";
+                if (checkUrl(this.connectionAddress)) {
                     this.inputFlag = false;
-                    this.connectionAddress = "https://www.geocfu.me/wols/connection.php";
-                    System.out.println("Default connection URL (" +
-                                                        this.connectionAddress + ") set.");
-                }
-                else if (this.option == 'n' || this.option == 'N') {
-                    this.inputFlag = false;
-                    this.testUrlFlag = true;
-                    this.sc.nextLine();
-                    do {
-                        System.out.print("Type your custom connection URL: ");
-                        this.connectionAddress = this.sc.nextLine();
-                        if(testUrl(this.connectionAddress)) {
-                            this.testUrlFlag = false;
-                            System.out.println("Custom ping URL (" +
-                                                        this.connectionAddress + ") set.");
-                        }
-                        else {
-                            System.out.println("Please input a valid URL.");
-                        }
-                    } while(this.testUrlFlag);
+                    System.out.println("Connection URL (" +
+                                        this.registrationAddress + ") set.");
                 }
                 else {
-                    System.out.println("Please select a valid option");
+                    System.out.println("Please input a valid URL.");
                 }
             } while (this.inputFlag);
         }

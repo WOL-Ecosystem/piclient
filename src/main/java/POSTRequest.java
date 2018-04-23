@@ -17,15 +17,14 @@ public class POSTRequest {
 				this.url = credentials.get("registrationAddress");
 
 				this.urlParameters = ("username=" + credentials.get("username") +
-				"&password=" + credentials.get("password"));
+				"&password=" + credentials.get("password") +
+				"&mac_and_name=" + credentials.get("macAndName"));
 			}
 			else if (credentials.get("postMethod").equals("connection")) {
 				this.url = credentials.get("connectionAddress");
 
 				this.urlParameters = ("username=" + credentials.get("username") +
-				"&auth_key=" + credentials.get("token") +
-				//to be changed
-				"&local_pc_names=" + credentials.get("username"));
+				"&api_key=" + credentials.get("token"));
 			}
 
 			this.urlParts = this.url.split("(//)");

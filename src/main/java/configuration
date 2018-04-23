@@ -1,8 +1,8 @@
 #DO-NOT-MAKE-ANY-CHANGES
-#Thu Apr 12 18:21:36 EEST 2018
-connectionAddress=https\://www.geocfu.me/wols/connection.php
+#Mon Apr 23 20:17:01 EEST 2018
+connectionAddress=https\://wols.geocfu.me/api/connection.php
 postMethod=connection
-registrationAddress=https\://www.geocfu.me/wols/registration.php
-targetMacAddress=01\:23\:EC\:67\:89\:AB
+macAndName=01\:23\:EC\:67\:89\:AB-Hercules
+registrationAddress=https\://wols.geocfu.me/api/registration.php
 username=geocfu
-token=28b6ec0dd6d91f8afdaadaf2d9ea6e4b995eef038c7371d74ba3a1f8e4b80bee
+token=eb56138bd63c010347262ad9f4bed7fc3e5c3628b3dc1917a955820ccc3f6139

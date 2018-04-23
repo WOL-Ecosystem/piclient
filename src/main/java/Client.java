@@ -11,7 +11,7 @@ public class Client {
     private static POSTRequest POSTConfiguration;
     private static LocalNetworkScanner scan;
 
-    private static String postResponse, postResponseApiKey, answer;
+    private static String postResponse, postResponseApiKey, answer, macToWake;
     private static boolean exceptionFlag;
 
     private static String errorChecking(String response) {
@@ -28,7 +28,7 @@ public class Client {
             else if (response.equals("INVALID_USERNAME")) {
                 throw new responseException("Invalid username.");
             }
-            else if (response.equals("INVALID_AUTH_KEY")) {
+            else if (response.equals("INVALID_API_KEY")) {
                 throw new responseException("Invalid authentication key.");
             }
             else if (response.equals("ACCOUNT_DOES_NOT_EXIST")) {
@@ -37,7 +37,7 @@ public class Client {
             else if (response.equals("ACCOUNT_ALREADY_EXISTS")) {
                 throw new responseException("There is already an account matching this username.");
             }
-            else if (response.equals("INCORRECT_AUTH_KEY")) {
+            else if (response.equals("INCORRECT_API_KEY")) {
                 throw new responseException("There is no account matching this authentication key.");
             }
             else {
@@ -79,7 +79,7 @@ public class Client {
 
                 registrationConfiguration = new Registration();
                 applicationProperties.setProperty("username", registrationConfiguration.getUsername());
-                applicationProperties.setProperty("targetMacAddress", registrationConfiguration.getMacAddress());
+                applicationProperties.setProperty("macAndName", registrationConfiguration.getMacAndName());
 
                 credentials.put("password", registrationConfiguration.getAuthPassword());
 
@@ -90,8 +90,7 @@ public class Client {
             credentials.put("registrationAddress", applicationProperties.getProperty("registrationAddress").replace("\\", ""));
             credentials.put("connectionAddress", applicationProperties.getProperty("connectionAddress").replace("\\", ""));
             credentials.put("username", applicationProperties.getProperty("username"));
-            credentials.put("targetMacAddress", applicationProperties.getProperty("targetMacAddress").replace("\\", ""));
-
+            credentials.put("macAndName", applicationProperties.getProperty("macAndName").replace("\\", ""));
 
             POSTConfiguration = new POSTRequest(credentials);
 
@@ -111,7 +110,17 @@ public class Client {
                 }
                 else if (applicationProperties.getProperty("postMethod").equals("connection")) {
                     System.out.println(postResponse);
-                    //MagicPacket wakeTarget = new MagicPacket(credentials);
+
+                    if (postResponse.contains("wakeUp")) {
+                        macToWake = postResponse.substring(11, 28);
+                        System.out.println("Wake: " + macToWake);
+                        //MagicPacket wakeTarget = new MagicPacket(credentials);
+                    }
+                    else {
+                        System.out.println("Unknown server response.");
+                    }
+
+
                 }
                 FileOutputStream out = new FileOutputStream("configuration");
                 applicationProperties.store(out, "DO-NOT-MAKE-ANY-CHANGES");
