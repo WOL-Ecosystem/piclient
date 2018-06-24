@@ -5,13 +5,30 @@ import java.util.regex.*;
 
 public class Registration {
 
-    private String userInput, usernameRegex, username, passwordRegex, password, repeatPassword, authPassword, macAddress, macAddressRegex;
-    private Pattern usernamePattern, passwordPattern, macAddressPattern;
+    private String userInput, usernameRegex, username, passwordRegex, password, repeatPassword, authPassword, macAddress, macAddressRegex, computerName, computerNameRegex, macAndName;
+    private Pattern usernamePattern, passwordPattern, macAddressPattern, computerNamePattern;
     private Matcher testInput;
-    private boolean usernameFlag, passwordFlag, repeatPasswordFlag, passwordsMatchFlag, inputFlag, macAddressFlag;
+    private boolean usernameFlag, passwordFlag, repeatPasswordFlag, passwordsMatchFlag, inputFlag, macAddressFlag, computerNameFlag;
     private Scanner sc;
-
     private LocalNetworkScanner scan;
+
+    private void inputComputerName() {
+        this.computerNameRegex = "^([a-zA-Z0-9]){5,20}$";
+        this.computerNamePattern = Pattern.compile(this.computerNameRegex);
+        this.computerNameFlag = true;
+        do {
+            System.out.print("Type the name of the target pc: ");
+            this.userInput = this.sc.nextLine();
+            this.testInput = computerNamePattern.matcher(this.userInput);
+            if (testInput.matches() == true) {
+                this.computerNameFlag = false;
+                this.computerName = this.userInput;
+            }
+            else {
+                System.out.println("Name must be like this, Hercules or hercules");
+            }
+        } while(this.computerNameFlag);
+    }
 
     private void inputMacAddress() {
         this.macAddressRegex = "^([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}$";
@@ -121,19 +138,23 @@ public class Registration {
                 this.inputFlag = false;
                 this.scan = new LocalNetworkScanner();
                 inputMacAddress();
+                inputComputerName();
             }
             else if (this.userInput.equals("2")) {
                 this.inputFlag = false;
 
                 System.out.println("Automated untill realease phase");
                 this.macAddress = "01:23:EC:67:89:AB";
-
+                this.computerName = "Hercules";
                 //inputMacAddress();
+                //inputComputerName();
             }
             else {
                 System.out.println("Please select a valid option");
             }
         } while (this.inputFlag);
+
+        this.macAndName = this.macAddress + "-" + this.computerName;
     }
 
     public String getUsername() {
@@ -144,9 +165,7 @@ public class Registration {
         return this.authPassword;
     }
 
-    public String getMacAddress() {
-        return this.macAddress;
+    public String getMacAndName() {
+        return this.macAndName;
     }
-
-
 }
