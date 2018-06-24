@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 import java.net.*;
 
-public class LocalNetworkScanner {
+public class MagicPacket {
 
     private String correctExecutionOutput, errorExecutionOutput;
 
