@@ -94,7 +94,7 @@ public class Client {
                         int found = postResponse.indexOf("wakeUp", start);
                         if (found != -1) {
                             macToWake = postResponse.substring(found + 9, found + 26);
-                            MagicPacket wakeTarget = new MagicPacket("192.168.1.255", macToWake);
+                            MagicPacket wakeTarget = new MagicPacket(macToWake);
                         }
                         if (found == -1) break;
                         start = found + 5;  // move start up for next iteration
