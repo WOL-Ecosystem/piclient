@@ -50,19 +50,17 @@ public class Registration {
 
     public Registration() {
         this.sc = new Scanner(System.in);
-        System.out.println("WOL-Client (aka. Wake On Lan Client) registration!");
-        System.out.println("If you do not already have an account," +
-        " please register at (TODO)");
-        System.out.println("\nLogin phase.\n");
+        System.out.println("\nWOL-Client (aka. Wake On Lan Client) registration!");
+        System.out.println("Registration phase.");
 
         // checking if the username complies to legal characters
         this.usernameRegex = "^([a-zA-Z0-9]){5,20}$";
         this.usernamePattern = Pattern.compile(this.usernameRegex);
         this.usernameFlag = true;
         do {
-            System.out.print("Username: ");
-            //this.userInput = sc.nextLine();
-            this.userInput = "geocfu"; // testing
+            System.out.println("Username: ");
+            this.userInput = this.sc.nextLine();
+            //this.userInput = "geocfu"; // testing
             this.testInput = usernamePattern.matcher(this.userInput);
             if (testInput.matches() == true) {
                 this.usernameFlag = false;
@@ -74,7 +72,6 @@ public class Registration {
             }
         } while (this.usernameFlag);
 
-
         // checking if the password complies to legal characters
         this.passwordRegex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\\w\\s]).{9,32}$";
         this.passwordPattern = Pattern.compile(this.passwordRegex);
@@ -84,8 +81,8 @@ public class Registration {
         do {
             do {
                 System.out.print("Password: ");
-                //this.userInput = sc.nextLine();
-                this.userInput = "TestTest1@";
+                this.userInput = this.sc.nextLine();
+                //this.userInput = "TestTest1@";
                 this.testInput = passwordPattern.matcher(this.userInput);
                 if (testInput.matches() == true) {
                     this.passwordFlag = false;
@@ -100,8 +97,8 @@ public class Registration {
 
             do {
                 System.out.print("Repeat password: ");
-                //this.userInput = sc.nextLine();
-                this.userInput = "TestTest1@";//to be filled
+                this.userInput = this.sc.nextLine();
+                //this.userInput = "TestTest1@";//to be filled
                 this.testInput = passwordPattern.matcher(this.userInput);
                 if (testInput.matches() == true) {
                     this.repeatPasswordFlag = false;
@@ -131,8 +128,8 @@ public class Registration {
 
         this.inputFlag = true;
         do {
-            //this.userInput = sc.nextLine();
-            this.userInput = Integer.toString(2);
+            this.userInput = this.sc.nextLine();
+            //this.userInput = Integer.toString(2);
 
             if (this.userInput.equals("1")) {
                 this.inputFlag = false;
@@ -143,11 +140,11 @@ public class Registration {
             else if (this.userInput.equals("2")) {
                 this.inputFlag = false;
 
-                System.out.println("Automated untill realease phase");
-                this.macAddress = "01:23:EC:67:89:AB";
-                this.computerName = "Hercules";
-                //inputMacAddress();
-                //inputComputerName();
+                //System.out.println("Automated untill realease phase");
+                //this.macAddress = "01:23:EC:67:89:AB";
+                //this.computerName = "Hercules";
+                inputMacAddress();
+                inputComputerName();
             }
             else {
                 System.out.println("Please select a valid option");

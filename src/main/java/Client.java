@@ -2,6 +2,8 @@ import java.io.*;
 import java.util.*;
 import java.net.*;
 
+import java.util.regex.*;
+
 public class Client {
 
     private static Map<String, String> credentials = new HashMap<String, String>();
@@ -14,34 +16,17 @@ public class Client {
     private static String postResponse, postResponseApiKey, answer, macToWake;
     private static boolean exceptionFlag;
 
+    private static Pattern pattern;
+    private static Matcher matcher;
+    private static int start;
+
     private static String errorChecking(String response) {
         try {
-            if (response.equals("POST_REQUIRED")) {
-                throw new responseException("Error while sending request. The request must be of type POST.");
-            }
-            else if (response.equals("FORM_DATA_MISSING")) {
-                throw new responseException("Some required fields were not sent to the server.");
-            }
-            else if (response.equals("FORM_DATA_EMPTY")) {
-                throw new responseException("Some required fields are not set.");
-            }
-            else if (response.equals("INVALID_USERNAME")) {
-                throw new responseException("Invalid username.");
-            }
-            else if (response.equals("INVALID_API_KEY")) {
-                throw new responseException("Invalid authentication key.");
-            }
-            else if (response.equals("ACCOUNT_DOES_NOT_EXIST")) {
-                throw new responseException("There is no account matching this email.");
-            }
-            else if (response.equals("ACCOUNT_ALREADY_EXISTS")) {
-                throw new responseException("There is already an account matching this username.");
-            }
-            else if (response.equals("INCORRECT_API_KEY")) {
-                throw new responseException("There is no account matching this authentication key.");
+            if (response.contains("SUCCESS")) {
+                answer = "validResponse";
             }
             else {
-                answer = "validResponse";
+                throw new responseException(response);
             }
         }
         catch (responseException rex) {
@@ -65,10 +50,10 @@ public class Client {
 
                 if (applicationProperties.getProperty("postMethod").equals("registration")) {
                     applicationProperties.setProperty("postMethod", "connection");
-                    System.out.println("first connection after registration");
+                    System.out.println("First connection after registration.");
                 }
                 else if (applicationProperties.getProperty("postMethod").equals("connection")) {
-                    System.out.println("Normal operation");
+                    System.out.println("Normal operation.");
                 }
                 credentials.put("token", applicationProperties.getProperty("token"));
             }
@@ -97,36 +82,34 @@ public class Client {
             postResponse = POSTConfiguration.getResponse().toString();
 
             if (errorChecking(postResponse).equals("validResponse")) {
-
-                if (applicationProperties.getProperty("postMethod").equals("registration")) {
-                    if (postResponse.contains("API_KEY")) {
-                        postResponseApiKey = postResponse.substring(12, 76);
-                        applicationProperties.setProperty("token", postResponseApiKey);
-                        System.out.println("You have been registered successfully!");
-                    }
-                    else {
-                        System.out.println("Unknown server response.");
+                System.out.println(postResponse);
+                if (postResponse.contains("API_KEY")) {
+                    int found = postResponse.indexOf("API_KEY");
+                    postResponseApiKey = postResponse.substring(found + 10 , found + 74);
+                    applicationProperties.setProperty("token", postResponseApiKey);
+                    System.out.println("You have been registered successfully!");
+                }
+                else if (postResponse.contains("wakeUp")) {
+                    while (true) {
+                        int found = postResponse.indexOf("wakeUp", start);
+                        if (found != -1) {
+                            macToWake = postResponse.substring(found + 9, found + 26);
+                            MagicPacket wakeTarget = new MagicPacket("192.168.1.255", macToWake);
+                        }
+                        if (found == -1) break;
+                        start = found + 5;  // move start up for next iteration
                     }
                 }
-                else if (applicationProperties.getProperty("postMethod").equals("connection")) {
-                    System.out.println(postResponse);
-
-                    if (postResponse.contains("wakeUp")) {
-                        macToWake = postResponse.substring(11, 28);
-                        System.out.println("Wake: " + macToWake);
-                        //MagicPacket wakeTarget = new MagicPacket(credentials);
-                    }
-                    else {
-                        System.out.println("Unknown server response.");
-                    }
-
-
+                else if (postResponse.contains("NO_ACTION_REQUIRED")){
+                    System.out.println("No action required. Stoping gracefully.");
                 }
-                FileOutputStream out = new FileOutputStream("configuration");
-                applicationProperties.store(out, "DO-NOT-MAKE-ANY-CHANGES");
-                out.close();
-
+                else {
+                    System.out.println("Unknown server response.");
+                }
             }
+            FileOutputStream out = new FileOutputStream("configuration");
+            applicationProperties.store(out, "DO-NOT-MAKE-ANY-CHANGES");
+            out.close();
         }
 
         catch (FileNotFoundException fnfex) {

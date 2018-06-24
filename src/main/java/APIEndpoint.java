@@ -25,40 +25,35 @@ public class APIEndpoint {
 
     public APIEndpoint() {
         this.sc = new Scanner(System.in);
-        try {
-            this.inputFlag = true;
-            do {
-                System.out.println("Please enter your API endpoint URL for the registration.");
-                //this.registrationAddress = this.sc.nextLine();
-                this.registrationAddress = "https://wols.geocfu.me/api/registration.php";
-                if (checkUrl(this.registrationAddress)) {
-                    this.inputFlag = false;
-                    System.out.println("Registration URL (" +
-                                        this.registrationAddress + ") set.");
-                }
-                else {
-                    System.out.println("Please input a valid URL.");
-                }
-            } while (this.inputFlag);
+        this.inputFlag = true;
+        do {
+            System.out.println("Please enter your API endpoint URL for the registration.");
+            this.registrationAddress = this.sc.nextLine();
+            //this.registrationAddress = "https://wols.geocfu.me/api/registration.php";
+            if (checkUrl(this.registrationAddress)) {
+                this.inputFlag = false;
+                System.out.println("Registration URL (" +
+                                    this.registrationAddress + ") set.");
+            }
+            else {
+                System.out.println("Please input a valid URL.");
+            }
+        } while (this.inputFlag);
 
-            this.inputFlag = true;
-            do {
-                System.out.println("Please enter your API endpoint URL for the connection.");
-                //this.connectionAddress = this.sc.nextLine();
-                this.connectionAddress = "https://wols.geocfu.me/api/connection.php";
-                if (checkUrl(this.connectionAddress)) {
-                    this.inputFlag = false;
-                    System.out.println("Connection URL (" +
-                                        this.registrationAddress + ") set.");
-                }
-                else {
-                    System.out.println("Please input a valid URL.");
-                }
-            } while (this.inputFlag);
-        }
-        finally {
-            this.sc.close();
-        }
+        this.inputFlag = true;
+        do {
+            System.out.println("Please enter your API endpoint URL for the connection.");
+            this.connectionAddress = this.sc.nextLine();
+            //this.connectionAddress = "https://wols.geocfu.me/api/connection.php";
+            if (checkUrl(this.connectionAddress)) {
+                this.inputFlag = false;
+                System.out.println("Connection URL (" +
+                                    this.registrationAddress + ") set.");
+            }
+            else {
+                System.out.println("Please input a valid URL.");
+            }
+        } while (this.inputFlag);
     }
     public String getRegistrationAddress() {
         return this.registrationAddress;
