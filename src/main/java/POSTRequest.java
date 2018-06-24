@@ -32,7 +32,7 @@ public class POSTRequest {
 			this.domainParts = this.stringDomain.split("(/)");
 			this.domainToPOST = InetAddress.getByName(this.domainParts[0]);
 
-			if (this.domainToPOST.isReachable(5000)) {
+			if (this.domainToPOST.isReachable(15000)) {
 				isSuccessfullState = true;
 				URL obj = new URL(this.url);
 				HttpsURLConnection connection =
