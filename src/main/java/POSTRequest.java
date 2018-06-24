@@ -67,10 +67,12 @@ public class POSTRequest {
 			//}
 
 		}
+		/*
 		catch (responseException rex) {
 			this.isSuccessfullState = false;
             System.out.println(rex.getMessage());
         }
+		*/
 		catch (MalformedURLException ex) {
             ex.printStackTrace();
         }
