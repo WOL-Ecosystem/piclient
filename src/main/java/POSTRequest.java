@@ -32,7 +32,9 @@ public class POSTRequest {
 			this.domainParts = this.stringDomain.split("(/)");
 			this.domainToPOST = InetAddress.getByName(this.domainParts[0]);
 
-			if (this.domainToPOST.isReachable(15000)) {
+			System.out.println(this.domainToPOST);
+
+			//if (this.domainToPOST.isReachable(15000)) {
 				isSuccessfullState = true;
 				URL obj = new URL(this.url);
 				HttpsURLConnection connection =
@@ -59,10 +61,10 @@ public class POSTRequest {
 					this.response.append(inputLine);
 				}
 				in.close();
-			}
-			else {
-				throw new responseException("Server is not reachable.");
-			}
+			//}
+			//else {
+				//throw new responseException("Server is not reachable.");
+			//}
 
 		}
 		catch (responseException rex) {
