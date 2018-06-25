@@ -18,65 +18,67 @@ This project is still a WIP. With that being said, please do not procced with th
 - One Raspberry Pi (if you intent to run the service there).
 - Java SE 7 and up although I recommend that you download the lattest release.
 - Lattest version of nmap (https://nmap.org/).
+- Lattest version of etherwake (https://linux.die.net/man/8/ether-wake).
 
 
 ### Installing  
 
-You need to register an account at (TODO).  
-Then, create a local folder anywhere on your raspberry called, WOL.
+Create a local folder anywhere on your raspberry called, wol.
 ```
 $ mkdir WOL
 ```
 Go to that folder by typping,
 ```
-$ cd WOL
+$ cd wol
 ```
 Then, you need to download the package. To do so, run the following command
 in Terminal.  
 ```
-$ git clone https://github.com/geocfu/WOL.git WOL
+$ git clone https://github.com/geocfu/WOL-Client
 ```
-Unzip the .zip package.  
- - For this purpose we are going to use the unzip command  
- To install the unzip command run the following (skip if already installed):
-```
-$ sudo apt-get install unzip
-```  
+ **By now, you should have a folder named wol and inside that folder all the repository's files.**
 
- ```
- $ unzip WOL.zip -d WOL
- ```
- **By now, you should have a folder named WOL and inside that folder all the repository's files.**
-
- Run the UnitRegistration.java program to complete the registration and to bond your account with your raspberry's MAC address.  
- The bellow commands need to be run inside the WOL folder.
+ Run the Client.java program to complete the registration and to bond your account with your raspberry's MAC address.  
 ```
-$ javac UnitRegistration.java
-$ java UnitRegistration
+$ cd WOL-Client/src/main/java
+$ javac Client.java
+$ java Client
 ```
-After that, you will be prompted to input your username and password.  
 **If everything went right, you should now have completed your account registration and you are ready to implement the client.**
 
- Now, it is time to implement the client to raspberry's cron jobs.
- Run the following command,
+ Now, it is time to implement the client to raspberry's cron jobs.  
+
+ First, create a shell script inside wol folder that will run the Client when called from cron.
  ```
- $ * * * * * java ~/Desktop/WOL/WOL.java >/dev/null 2>&1
+ $ cd
+ $ cd wol
+ $ nano wol.sh
+ ```
+ Inside the wol.sh, type the following.
+
+ ```
+ #!/bin/bash
+ cd /home/pi/wol/WOL-Client/src/main/java/ &&
+ java -cp . Client
+ ```
+ Then, exit nano and save the file.  
+
+ After that, run the following command to log the cron job
+ ```
+ $ crontab -e
+ $ * * * * * /bin/bash /home/pi/wol/WOL-Client/src/main/java/wol.sh
  ```
 
- **DONE, enjoy!**
+ **DONE, enjoy!**  
 
-## Example Use
-
-TODO
+ After all this, all you have to do is, visit www.your-public-domain/wake.html, type the username nd the password of your account and the name of computer to wake. After a maximum time of one minute, the target computer will wake.
 
 ## Contributing
 
 If you want to contribute to the project, you are more than welcome. Simply, fork the repository, commit your code and create a pull request.
 
 ## Versions
-  - version 0.3.1-pre.alpha
-  - version 0.2.7-pre.alpha
-  - version 0.2.5-pre.alpha  
+  - version 1.0.0
 
 ## Authors
 
