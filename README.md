@@ -4,11 +4,7 @@ WOL-Client is a java project meant to run on any raspberry pi and/or computer. A
 
 ## :satellite: [WOL- Server (aka. Wake on Lan-Server)](https://github.com/geocfu/WOL-Server) :arrow_right:
 
-WOL-Server is a RESTful API designed to work alongisde with the WOL-Client.
-
-## Current status
-
-This project is still a WIP. With that being said, please do not procced with the following instruction until further notice.    
+WOL-Server is a RESTful API designed to work alongisde with the WOL-Client.  
 
 ## Getting Started  
 
