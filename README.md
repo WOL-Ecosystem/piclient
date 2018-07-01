@@ -21,7 +21,7 @@ WOL-Server is a RESTful API designed to work alongisde with the WOL-Client.
 
 Create a local folder anywhere on your raspberry called, wol.
 ```
-$ mkdir WOL
+$ mkdir wol
 ```
 Go to that folder by typping,
 ```
