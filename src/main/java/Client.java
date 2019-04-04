@@ -22,19 +22,16 @@ public class Client {
 
     private static String errorChecking(String response) {
         try {
-            if (response.contains("SUCCESS")) {
-                answer = "validResponse";
-            }
-            else {
+            if (response.contains("SUCCESS"))
+                return "validResponse";
+            else
                 throw new responseException(response);
-            }
         }
         catch (responseException rex) {
             exceptionFlag = true;
-            answer = "invalidResponse";
             System.out.println(rex.getMessage());
         }
-        return answer;
+        return "invalidResponse";
     }
 
     public static void main (String[] args) {
