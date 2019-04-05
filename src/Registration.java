@@ -1,9 +1,7 @@
-import java.io.*;
 import java.util.*;
-import java.net.*;
 import java.util.regex.*;
 
-public class Registration {
+class Registration {
 
     private String userInput, usernameRegex, username, passwordRegex, password, repeatPassword, authPassword, macAddress, macAddressRegex, computerName, computerNameRegex, macAndName;
     private Pattern usernamePattern, passwordPattern, macAddressPattern, computerNamePattern;
@@ -20,14 +18,13 @@ public class Registration {
             System.out.print("Type the name of the target pc: ");
             this.userInput = this.sc.nextLine();
             this.testInput = computerNamePattern.matcher(this.userInput);
-            if (testInput.matches() == true) {
+            if (testInput.matches()) {
                 this.computerNameFlag = false;
                 this.computerName = this.userInput;
-            }
-            else {
+            } else {
                 System.out.println("Name must be like this, Hercules or hercules");
             }
-        } while(this.computerNameFlag);
+        } while (this.computerNameFlag);
     }
 
     private void inputMacAddress() {
@@ -38,17 +35,17 @@ public class Registration {
             System.out.print("Type the mac adress of the target pc: ");
             this.userInput = this.sc.nextLine();
             this.testInput = macAddressPattern.matcher(this.userInput);
-            if (testInput.matches() == true) {
+            if (testInput.matches()) {
                 this.macAddressFlag = false;
                 this.macAddress = this.userInput;
-            }
-            else {
+            } else {
                 System.out.println("Mac address must be like this, ex. 01:23:EC:67:89:AB.");
             }
-        } while(this.macAddressFlag);
+        } while (this.macAddressFlag);
     }
 
-    public Registration() {
+    void run(){
+
         this.sc = new Scanner(System.in);
         System.out.println("\nWOL-Client (aka. Wake On Lan Client) registration!");
         System.out.println("Registration phase.");
@@ -62,13 +59,12 @@ public class Registration {
             this.userInput = this.sc.nextLine();
             //this.userInput = "geocfu"; // testing
             this.testInput = usernamePattern.matcher(this.userInput);
-            if (testInput.matches() == true) {
+            if (testInput.matches()) {
                 this.usernameFlag = false;
                 this.username = this.userInput;
-            }
-            else {
+            } else {
                 System.out.println("Invalid username.\nUsername must me at least 5 to maximum 20 characters" +
-                " and must not contain any sepcial characters.");
+                        " and must not contain any sepcial characters.");
             }
         } while (this.usernameFlag);
 
@@ -84,14 +80,13 @@ public class Registration {
                 this.userInput = this.sc.nextLine();
                 //this.userInput = "TestTest1@";
                 this.testInput = passwordPattern.matcher(this.userInput);
-                if (testInput.matches() == true) {
+                if (testInput.matches()) {
                     this.passwordFlag = false;
                     this.password = this.userInput;
-                }
-                else {
+                } else {
                     System.out.println("Password must be 9 to 32 characters long," +
-                    " it must contain at least one lower case and one upper case character," +
-                    " one number and one special character, ex. Password123@ .");
+                            " it must contain at least one lower case and one upper case character," +
+                            " one number and one special character, ex. Password123@ .");
                 }
             } while (this.passwordFlag);
 
@@ -100,14 +95,13 @@ public class Registration {
                 this.userInput = this.sc.nextLine();
                 //this.userInput = "TestTest1@";//to be filled
                 this.testInput = passwordPattern.matcher(this.userInput);
-                if (testInput.matches() == true) {
+                if (testInput.matches()) {
                     this.repeatPasswordFlag = false;
                     this.repeatPassword = this.userInput;
-                }
-                else {
+                } else {
                     System.out.println("Password must be 9 to 32 characters long," +
-                    " it must contain at least one lower case and one upper case character," +
-                    " one number and one special character, ex. Password123@ .");
+                            " it must contain at least one lower case and one upper case character," +
+                            " one number and one special character, ex. Password123@ .");
                 }
             } while (this.repeatPasswordFlag);
 
@@ -115,8 +109,7 @@ public class Registration {
                 this.authPassword = this.repeatPassword;
                 this.passwordsMatchFlag = false;
                 System.out.println("Passwords match.");
-            }
-            else {
+            } else {
                 this.passwordsMatchFlag = true;
                 System.out.println("Passwords dont match.");
             }
@@ -134,10 +127,10 @@ public class Registration {
             if (this.userInput.equals("1")) {
                 this.inputFlag = false;
                 this.scan = new LocalNetworkScanner();
+                scan.scan();
                 inputMacAddress();
                 inputComputerName();
-            }
-            else if (this.userInput.equals("2")) {
+            } else if (this.userInput.equals("2")) {
                 this.inputFlag = false;
 
                 //System.out.println("Automated untill realease phase");
@@ -145,8 +138,7 @@ public class Registration {
                 //this.computerName = "Hercules";
                 inputMacAddress();
                 inputComputerName();
-            }
-            else {
+            } else {
                 System.out.println("Please select a valid option");
             }
         } while (this.inputFlag);
@@ -154,15 +146,15 @@ public class Registration {
         this.macAndName = this.macAddress + "-" + this.computerName;
     }
 
-    public String getUsername() {
+    String getUsername() {
         return this.username;
     }
 
-    public String getAuthPassword() {
+    String getAuthPassword() {
         return this.authPassword;
     }
 
-    public String getMacAndName() {
+    String getMacAndName() {
         return this.macAndName;
     }
 }
