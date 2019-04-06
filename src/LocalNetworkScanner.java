@@ -5,12 +5,12 @@ import java.io.InputStreamReader;
  * This class is responsible for scanning the network using command line.
  * We don't need a Object of this class we only need to call the method scan.
  */
-class LocalNetworkScanner {
+abstract class LocalNetworkScanner {
 
     /**
      * This method runs nmap command to scan the network and prints the results.
      */
-    void scan() {
+    static void scan() {
         try {
             /*
              * Execution of the command has started; command runs in the background.

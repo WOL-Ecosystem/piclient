@@ -35,8 +35,8 @@ class APIEndpoint {
             // registrationAddress = "https://wols.geocfu.me/api/registration.php";
             System.out.println("Please enter your API endpoint URL for the registration.");
             while (true)
-                if (checkUrl(this.registrationAddress = new Scanner(System.in).nextLine())) {
-                    System.out.println("Registration URL (" + this.registrationAddress + ") set.");
+                if (checkUrl(registrationAddress = new Scanner(System.in).nextLine())) {
+                    System.out.println("Registration URL (" + registrationAddress + ") set.");
                     break;
                 } else
                     System.out.println("Please type a valid URL.");
@@ -47,11 +47,12 @@ class APIEndpoint {
             // connectionAddress = "https://wols.geocfu.me/api/connection.php";
             System.out.println("Please enter your API endpoint URL for the connection.");
             while (true)
-                if (checkUrl(this.connectionAddress = new Scanner(System.in).nextLine())) {
-                    System.out.println("Connection URL (" + this.registrationAddress + ") set.");
+                if (checkUrl(connectionAddress = new Scanner(System.in).nextLine())) {
+                    System.out.println("Connection URL (" + registrationAddress + ") set.");
                     break;
                 } else
                     System.out.println("Please type a valid URL.");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -61,13 +62,13 @@ class APIEndpoint {
      * Getter for registrationAddress url field
      */
     String getRegistrationAddress() {
-        return this.registrationAddress;
+        return registrationAddress;
     }
 
     /**
      * Getter for connectionAddress url field
      */
     String getConnectionAddress() {
-        return this.connectionAddress;
+        return connectionAddress;
     }
 }

@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
  * This class is responsible for waking up a device using command line, mac address and the wakeOnLan technology.
  * We don't need a Object of this class we only need to call the method wakeOnLan.
  */
-abstract class MagicPacket {
+class MagicPacket {
 
     /**
      * This method runs a command with sudo to wake a device with a specific mac address and prints the results.

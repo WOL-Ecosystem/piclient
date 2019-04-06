@@ -47,15 +47,19 @@ public class Main {
             credentials.put("username", applicationProperties.getProperty("username"));
             credentials.put("macAndName", applicationProperties.getProperty("macAndName").replace("\\", ""));
 
-            String postResponse = new PostRequest().makeRequest(credentials);
+            String postResponse = PostRequest.makeRequest(credentials);
             int start = 0;
             if (postResponse.contains("SUCCESS")) {
+
                 System.out.println(postResponse);
                 if (postResponse.contains("API_KEY")) {
+
                     int found = postResponse.indexOf("API_KEY");
                     applicationProperties.setProperty("token", postResponse.substring(found + 10, found + 74));
                     System.out.println("You have been registered successfully!");
+
                 } else if (postResponse.contains("wakeUp")) {
+
                     while (true) {
                         int found = postResponse.indexOf("wakeUp", start);
                         if (found != -1)
@@ -64,13 +68,15 @@ public class Main {
                             break;
                         start = found + 5;  // move start up for next iteration
                     }
-                } else if (postResponse.contains("NO_ACTION_REQUIRED"))
-                    System.out.println("No action required. Stopping gracefully.");
-                else
-                    System.out.println("Unknown server response.");
-            } else
-                System.out.println("\n Request error! \n");
 
+                } else if (postResponse.contains("NO_ACTION_REQUIRED")) {
+                    System.out.println("No action required. Stopping gracefully.");
+                } else {
+                    System.out.println("Unknown server response.");
+                }
+            } else {
+                System.out.println("\n Request error! \n");
+            }
             applicationProperties.store(new FileOutputStream("configuration"), "DO-NOT-MAKE-ANY-CHANGES");
 
         } catch (Exception e) {

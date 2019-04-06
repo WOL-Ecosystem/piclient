@@ -14,7 +14,7 @@ class PostRequest {
      * @param credentials In this we store names and values of our request data.
      * @return The response of the server as a string or and empty string in case of error
      */
-    String makeRequest(Map<String, String> credentials) {
+    static String makeRequest(Map<String, String> credentials) {
         try {
             String url = null;
             String urlParameters = null;
