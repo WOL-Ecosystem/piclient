@@ -1,3 +1,6 @@
+# Current Status
+The project is being actively reworked including code refactoring and logic. As of now, the stable release is the v1.0.0.
+
 # WOL-Client (aka. Wake on Lan-Client)
 
 WOL-Client is a java project meant to run on any raspberry pi and/or computer. As the name implies, with this project you will be able to remotely boot or power off your computer/s from anywhere. WOL-Client is not a stand-alone service, is a client who runs in the background contacting WOL-Server's RESTful API using cron's job.
