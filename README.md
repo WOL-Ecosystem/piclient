@@ -82,6 +82,9 @@ If you want to contribute to the project, you are more than welcome. Simply, for
 ## Authors
 
 * **George Mantellos** - *Main Author* - [geocfu](https://github.com/geocfu)
+## Contributors
+
+* **Jim Chloros** - [JIMCHLOROS](https://github.com/JIMCHLOROS)
 
 See also the list of [contributors](https://github.com/geocfu/WOL/contributors) who participated in this project.
 
