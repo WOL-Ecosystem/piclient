@@ -86,7 +86,7 @@ If you want to contribute to the project, you are more than welcome. Simply, for
 
 * **Jim Chloros** - [JIMCHLOROS](https://github.com/JIMCHLOROS)
 
-See also the list of [contributors](https://github.com/geocfu/WOL/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/WOL-Ecosystem/piclient/graphs/contributors) who participated in this project.
 
 ## License
 
