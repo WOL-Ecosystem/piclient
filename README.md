@@ -5,7 +5,7 @@ The project is being actively reworked including code refactoring and logic. As 
 
 WOL-Client is a java project meant to run on any raspberry pi and/or computer. As the name implies, with this project you will be able to remotely boot or power off your computer/s from anywhere. WOL-Client is not a stand-alone service, is a client who runs in the background contacting WOL-Server's RESTful API using cron's job.
 
-## :satellite: [WOL- Server (aka. Wake on Lan-Server)](https://github.com/geocfu/WOL-Server) :arrow_right:
+## :satellite: [WOL- Server (aka. Wake on Lan-Server)](https://github.com/WOL-Ecosystem/server) :arrow_right:
 
 WOL-Server is a RESTful API designed to work alongisde with the WOL-Client.  
 
@@ -13,7 +13,7 @@ WOL-Server is a RESTful API designed to work alongisde with the WOL-Client.
 
 ### Prerequisites
 
-- WOL-Server (https://github.com/geocfu/WOL-Server)
+- WOL-Server (https://github.com/WOL-Ecosystem/server)
 - One Raspberry Pi (if you intent to run the service there).
 - Java SE 7 and up although I recommend that you download the lattest release.
 - Lattest version of nmap (https://nmap.org/).
