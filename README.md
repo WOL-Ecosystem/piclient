@@ -33,7 +33,7 @@ $ cd wol
 Then, you need to download the package. To do so, run the following command
 in Terminal.  
 ```
-$ git clone https://github.com/geocfu/WOL-Client
+$ git clone https://github.com/WOL-Ecosystem/piclient
 ```
  **By now, you should have a folder named wol and inside that folder all the repository's files.**
 
